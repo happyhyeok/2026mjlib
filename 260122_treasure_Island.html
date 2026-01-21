@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>엔트리 보물찾기 대모험!</title>
+    <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Jua', 'Malgun Gothic', sans-serif;
+            background-color: #f0f9ff;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            line-height: 1.8;
+            font-size: 22px;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 40px;
+            border-radius: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        /* 텍스트 하이라이트 (블록 색상 매칭) */
+        .txt-start { color: #00b400; font-weight: bold; background: #e6ffe6; padding: 2px 5px; border-radius: 5px;}
+        .txt-flow { color: #17c0e9; font-weight: bold; background: #e0f9ff; padding: 2px 5px; border-radius: 5px;}
+        .txt-move { color: #8d3af1; font-weight: bold; background: #f3e6ff; padding: 2px 5px; border-radius: 5px;}
+        .txt-look { color: #e63c46; font-weight: bold; background: #ffe6e6; padding: 2px 5px; border-radius: 5px;}
+        .txt-judge { color: #2e96ff; font-weight: bold; background: #e6f0ff; padding: 2px 5px; border-radius: 5px;}
+        .txt-sound { color: #83a602; font-weight: bold; background: #f4f9e0; padding: 2px 5px; border-radius: 5px;}
+
+        h1 {
+            color: #2b96ed;
+            text-align: center;
+            border-bottom: 4px dashed #a3dbf0;
+            padding-bottom: 20px;
+            font-size: 2.2em;
+        }
+        
+        /* 컴퓨팅 사고력 섹션 */
+        .thinking-box {
+            background-color: #fff9c4;
+            border: 3px solid #fbc02d;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+        .thinking-title {
+            font-size: 1.3em;
+            color: #f57f17;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        /* 미션 박스 스타일 */
+        .mission-box {
+            background-color: #eef7e6;
+            border: 3px solid #6cbf43;
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+        .mission-badge {
+            background-color: #6cbf43;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 30px;
+            font-size: 1.1em;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+        .question {
+            font-size: 1.3em;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        /* 확장 아이디어 박스 */
+        .extension-box {
+            background-color: #e8eaf6;
+            border: 3px solid #3f51b5;
+            border-radius: 20px;
+            padding: 30px;
+            margin-top: 50px;
+        }
+        .extension-title {
+            color: #3f51b5;
+            text-align: center;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+        .idea-card {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            border-left: 10px solid #7986cb;
+        }
+
+        /* 엔트리 블록 CSS 디자인 */
+        .block {
+            display: inline-block;
+            padding: 10px 20px;
+            border-radius: 30px;
+            color: white;
+            font-weight: bold;
+            margin: 5px;
+            box-shadow: 3px 3px 0px rgba(0,0,0,0.15);
+            font-size: 1em;
+            vertical-align: middle;
+        }
+        .b-start { background-color: #00b400; border: 2px solid #009000; } 
+        .b-flow { background-color: #17c0e9; border: 2px solid #1299ba; } 
+        .b-move { background-color: #8d3af1; border: 2px solid #6f2dbd; } 
+        .b-look { background-color: #e63c46; border: 2px solid #b83038; } 
+        .b-judge { background-color: #2e96ff; border-radius: 8px; padding: 8px 15px; } 
+
+        details {
+            margin-top: 20px;
+            background-color: white;
+            border-radius: 15px;
+            padding: 15px;
+            border: 3px dashed #ccc;
+        }
+        summary {
+            cursor: pointer;
+            color: #555;
+            font-weight: bold;
+            font-size: 1.1em;
+            list-style: none;
+        }
+        summary::after {
+            content: " 🔍 힌트 블록 보기 (클릭)"; 
+            color: #ff9d00;
+        }
+        .hint-content {
+            margin-top: 15px;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>🏴‍☠️ 엔트리 보물찾기 대모험!</h1>
+
+    <div class="thinking-box">
+        <span class="thinking-title">🧠 코딩 박사의 비밀 노트</span>
+        <p>
+            코딩은 <strong>"해야 할 일을 아주 작게 나누어 순서대로 시키는 것"</strong>이에요.<br>
+            한 번에 "보물 찾아!"라고 하면 컴퓨터는 알아듣지 못해요.<br>
+            ① 앞으로 가, ② 쳐다봐, ③ 멈춰! 처럼 하나씩 알려줘야 해요.
+        </p>
+    </div>
+
+    <div class="mission-box" style="background-color: #fff0f5; border-color: #ffb6c1;">
+        <div class="mission-badge" style="background-color: #ff8da1;">준비 단계: 배우 섭외하기</div>
+        <div class="question">
+            🎬 우리 게임에 필요한 것들을 준비해요.
+        </div>
+        <p>엔트리 화면 왼쪽의 <strong>[+] 오브젝트 추가하기</strong> 버튼을 눌러주세요.</p>
+        <ul>
+            <li>🚢 <strong>해적선:</strong> 우리가 조종할 배를 골라주세요.</li>
+            <li>💎 <strong>보물상자:</strong> 찾고 싶은 보물을 골라주세요.</li>
+            <li>🎨 <strong>보물섬(장애물):</strong> 이건 직접 그려볼까요?
+                <br>&nbsp;&nbsp;&nbsp;→ [그림판]을 선택해서 뾰족뾰족 위험한 섬을 그려보세요!</li>
+            <li>🌊 <strong>배경:</strong> 바다 색깔로 바꿔주세요.</li>
+        </ul>
+        <p>※ 다 준비했으면 <strong>'해적선'</strong>을 클릭하고 코딩을 시작해요!</p>
+    </div>
+
+    <div class="mission-box">
+        <div class="mission-badge">1단계: 배 움직이기</div>
+        <div class="question">
+            Q. 배가 내 마우스 화살표를 계속 따라오게 하려면?
+        </div>
+        <p>
+            배가 그냥 움직이면 안 되고, 먼저 내가 가리키는 곳을 봐야겠죠?<br>
+            보라색 블록 꾸러미에서 <span class="txt-move">마우스 포인터 쪽 바라보기</span>를 찾아보세요.<br>
+            그 다음, 앞으로 나아가게 하려면 <span class="txt-move">이동 방향으로 1 만큼 움직이기</span>가 필요해요.
+        </p>
+        
+        <details>
+            <summary></summary>
+            <div class="hint-content">
+                <p><strong>[움직임]</strong> 꾸러미를 잘 찾아보세요!</p>
+                <span class="block b-move">마우스 포인터 쪽 바라보기</span>
+                <br>
+                <span class="block b-move">이동 방향으로 1 만큼 움직이기</span>
+            </div>
+        </details>
+    </div>
+
+    <div class="mission-box">
+        <div class="mission-badge">2단계: 멈추지 마!</div>
+        <div class="question">
+            Q. 코드를 넣었는데 배가 한번 찔끔 움직이고 멈춰버려요.
+        </div>
+        <p>
+            컴퓨터는 시킨 대로 딱 <strong>한 번만</strong> 하거든요. <br>
+            배가 멈추지 않고 계속 따라오게 하려면, 파란색 블록인 <span class="txt-flow">계속 반복하기</span> 입 안에 움직이는 블록들을 넣어줘야 해요.
+        </p>
+
+        <details>
+            <summary></summary>
+            <div class="hint-content">
+                <p><strong>[흐름]</strong> 꾸러미의 대장님을 소개합니다!</p>
+                <span class="block b-flow">계속 반복하기</span>
+                <p>이 파란색 입 안에 보라색 움직임 블록을 쏘옥 넣어주세요.</p>
+            </div>
+        </details>
+    </div>
+
+    <div class="mission-box">
+        <div class="mission-badge">3단계: 상황 판단하기</div>
+        <div class="question">
+            Q. 배가 섬에 '쿵' 부딪혔는지 어떻게 알 수 있을까요?
+        </div>
+        <p>
+            컴퓨터에게 질문을 가르쳐줘야 해요.<br>
+            파란색 흐름 블록 중에 <span class="txt-flow">만일 참(이)라면</span> 블록을 가져오세요.<br>
+            그리고 '참' 자리에 판단 블록인 <span class="txt-judge">보물섬 에 닿았는가?</span>를 끼워 넣는 거예요.
+        </p>
+
+        <details>
+            <summary></summary>
+            <div class="hint-content">
+                <p><strong>[흐름]</strong>과 <strong>[판단]</strong> 블록을 합체!</p>
+                <span class="block b-flow">만일 <span class="block b-judge">참</span> (이)라면</span>
+                <br>+<br>
+                <span class="block b-judge">보물섬 에 닿았는가?</span>
+            </div>
+        </details>
+    </div>
+
+    <div class="mission-box">
+        <div class="mission-badge">4단계: 결과 말하고 끝내기</div>
+        <div class="question">
+            Q. 보물섬(함정)에 닿으면 게임 오버! 보물상자에 닿으면 성공!
+        </div>
+        <p>
+            상황에 맞춰서 해적선이 말을 해야 해요.<br>
+            부딪혔을 때 빨간색 생김새 블록인 <span class="txt-look">"좌초"를 말하기</span>를 하고,<br>
+            더 이상 움직이지 않게 <span class="txt-flow">모든 코드 멈추기</span>를 해주세요.
+        </p>
+
+        <details>
+            <summary></summary>
+            <div class="hint-content">
+                <p>💣 <strong>보물섬(함정)에 닿았을 때:</strong></p>
+                <span class="block b-look">"좌초" 을(를) 2초 동안 말하기</span>
+                <span class="block b-flow">모든 코드 멈추기</span>
+                <hr style="border: 1px dashed #ccc; margin:10px 0;">
+                <p>💎 <strong>보물상자에 닿았을 때:</strong></p>
+                <span class="block b-look">"보물발견" 을(를) 2초 동안 말하기</span>
+                <span class="block b-flow">모든 코드 멈추기</span>
+            </div>
+        </details>
+    </div>
+
+    <div class="mission-box" style="border-color: #ff6b6b; background-color: #fff5f5;">
+        <h3 style="text-align:center; color:#ff6b6b;">🏆 최종 점검! 순서대로 조립했나요?</h3>
+        <p>
+            1. 초록색 <span class="txt-start">시작하기 버튼을 클릭했을 때</span> 깃발을 꽂아요.<br>
+            2. 그 아래에 파란색 <span class="txt-flow">계속 반복하기</span>를 붙여요.<br>
+            3. 반복하기 입 안에 보라색 <span class="txt-move">마우스 바라보기</span>와 <span class="txt-move">움직이기</span>를 넣어요.<br>
+            4. 그 밑에 <span class="txt-flow">만일 보물섬에 닿았는가?</span> 블록 세트를 넣어요.<br>
+            5. 또 그 밑에 <span class="txt-flow">만일 보물상자에 닿았는가?</span> 블록 세트를 넣어요.<br>
+        </p>
+    </div>
+
+    <div class="extension-box">
+        <div class="extension-title">🚀 레벨 업! 도전 과제</div>
+        <p style="text-align:center; margin-bottom:30px;">코딩을 다 마쳤나요? 게임을 더 재미있게 만들어봐요!</p>
+
+        <div class="idea-card">
+            <h3>🎵 도전 1. 실감 나는 효과음 넣기</h3>
+            <p>보물을 찾았을 때 '박수 소리', 부딪혔을 때 '쿵 소리'가 나면 더 재미있겠죠?</p>
+            <p style="background:#eee; padding:15px; border-radius:10px;">
+                <strong>[작업 순서]</strong><br>
+                1. 화면 위쪽의 <strong>[소리]</strong> 탭을 누르고 소리를 추가해요.<br>
+                2. 다시 <strong>[블록]</strong> 탭으로 돌아와요.<br>
+                3. 연두색 <strong>[소리]</strong> 꾸러미에서 소리 재생하기 블록을 가져와요.<br>
+                4. "보물 발견" 말하기 블록 바로 위에 소리 블록을 끼워 넣으세요!
+            </p>
+        </div>
+
+        <div class="idea-card">
+            <h3>🌀 도전 2. 빙글빙글 회전하는 섬 만들기</h3>
+            <p>섬이 가만히 있으니까 너무 쉽죠? 섬이 제자리에서 빙글빙글 돌게 만들어봐요!</p>
+            <p style="background:#eee; padding:15px; border-radius:10px;">
+                <strong>[작업 순서]</strong><br>
+                1. 코딩할 오브젝트를 <strong>[보물섬]</strong>(직접 그린 그림)으로 바꿔주세요.<br>
+                2. <strong>[시작하기 버튼을 클릭했을 때]</strong>를 가져와요.<br>
+                3. 그 아래에 <strong>[계속 반복하기]</strong>를 붙여요.<br>
+                4. 반복하기 안에 <strong>[방향을 90도만큼 회전하기]</strong>를 넣고 숫자를 2나 3으로 작게 바꿔보세요.
+            </p>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>
