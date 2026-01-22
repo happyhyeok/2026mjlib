@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>엔트리 미로 탈출 대작전!</title>
+    <style>
+        body {
+            font-family: 'Malgun Gothic', 'Dotum', sans-serif;
+            background-color: #f0f9ff;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+            font-size: 20px;
+            letter-spacing: -0.5px;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        /* 텍스트 하이라이트 (엔트리 블록 색상) */
+        .txt-start { color: #00b400; font-weight: bold; background: #e6ffe6; padding: 2px 6px; border-radius: 4px;}
+        .txt-flow { color: #17c0e9; font-weight: bold; background: #e0f9ff; padding: 2px 6px; border-radius: 4px;}
+        .txt-move { color: #8d3af1; font-weight: bold; background: #f3e6ff; padding: 2px 6px; border-radius: 4px;}
+        .txt-look { color: #e63c46; font-weight: bold; background: #ffe6e6; padding: 2px 6px; border-radius: 4px;}
+        .txt-judge { color: #2e96ff; font-weight: bold; background: #e6f0ff; padding: 2px 6px; border-radius: 4px;}
+        .txt-sound { color: #83a602; font-weight: bold; background: #f4f9e0; padding: 2px 6px; border-radius: 4px;}
+
+        h1 {
+            color: #2b96ed;
+            text-align: center;
+            border-bottom: 3px solid #a3dbf0;
+            padding-bottom: 15px;
+            font-size: 2.0em;
+            font-weight: bold;
+        }
+        
+        /* 박스 스타일들 */
+        .thinking-box {
+            background-color: #fff9c4;
+            border: 2px solid #fbc02d;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .thinking-title {
+            font-size: 1.2em;
+            color: #f57f17;
+            font-weight: bold;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .mission-box {
+            background-color: #eef7e6;
+            border: 2px solid #6cbf43;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+        }
+        .mission-badge {
+            background-color: #6cbf43;
+            color: white;
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-size: 1.0em;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+        .question {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        /* 방향 설명 박스 */
+        .angle-box {
+            background-color: #f3e6ff;
+            border: 3px solid #8d3af1;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+        .angle-desc {
+            font-size: 1.1em;
+            margin-bottom: 20px;
+            color: #333;
+        }
+        .angle-img {
+            max-width: 60%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        
+        /* 카드형 디자인 CSS */
+        .card-container {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .angle-card {
+            background: white;
+            border: 2px solid #d1b3ff;
+            border-radius: 15px;
+            padding: 20px 5px;
+            width: 23%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.05);
+        }
+        .angle-card.highlight {
+            border: 3px solid #ff6b6b;
+            background-color: #fff0f0;
+        }
+        .arrow-box {
+            width: 50px;
+            height: 50px;
+            background-color: #007bff;
+            border: 2px solid #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .arrow-icon {
+            color: white;
+            font-size: 30px;
+            font-weight: bold;
+            line-height: 1;
+        }
+        .card-title {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        .card-deg {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #8d3af1;
+        }
+        .card-sub {
+            font-size: 0.8em;
+            color: #ff6b6b;
+            font-weight: bold;
+        }
+
+        /* 팁 박스 (이동방향 설명용) */
+        .tip-box {
+            background-color: #fffbe6;
+            border-left: 5px solid #ffd700;
+            padding: 15px;
+            margin-top: 15px;
+            font-size: 0.9em;
+            color: #555;
+        }
+
+        .extension-box {
+            background-color: #e8eaf6;
+            border: 2px solid #3f51b5;
+            border-radius: 15px;
+            padding: 25px;
+            margin-top: 40px;
+        }
+        .extension-title {
+            color: #3f51b5;
+            text-align: center;
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+        .idea-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            border-left: 8px solid #7986cb;
+        }
+
+        /* 엔트리 블록 CSS */
+        .block {
+            display: inline-block;
+            padding: 8px 15px;
+            border-radius: 20px;
+            color: white;
+            font-weight: bold;
+            margin: 4px;
+            box-shadow: 2px 2px 0px rgba(0,0,0,0.15);
+            font-size: 0.95em;
+            vertical-align: middle;
+            font-family: 'Malgun Gothic', sans-serif;
+        }
+        .b-start { background-color: #00b400; border: 1px solid #009000; } 
+        .b-flow { background-color: #17c0e9; border: 1px solid #1299ba; } 
+        .b-move { background-color: #8d3af1; border: 1px solid #6f2dbd; } 
+        .b-look { background-color: #e63c46; border: 1px solid #b83038; } 
+        .b-judge { background-color: #2e96ff; border-radius: 5px; padding: 6px 12px; } 
+
+        details {
+            margin-top: 20px;
+            background-color: white;
+            border-radius: 10px;
+            padding: 15px;
+            border: 2px dashed #ccc;
+        }
+        summary {
+            cursor: pointer;
+            color: #555;
+            font-weight: bold;
+            font-size: 1.1em;
+            list-style: none;
+        }
+        summary::after {
+            content: " 🔍 힌트 블록 보기 (클릭)"; 
+            color: #ff9d00;
+        }
+        .hint-content {
+            margin-top: 15px;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>🏃‍♂️ 엔트리 미로 탈출 대작전!</h1>
+
+    <div class="thinking-box">
+        <span class="thinking-title">🧠 코딩 박사의 비밀 노트</span>
+        <p>
+            코딩은 <strong>"해야 할 일을 아주 작게 나누어 순서대로 시키는 것"</strong>이에요.<br>
+            "미로를 탈출해!"라고 한 번에 말하는 대신,<br>
+            ① 오른쪽 키를 누르면? ② 어느 방향을 보고? ③ 얼마나 움직일까? <br>
+            이렇게 하나씩 나누어서 명령해 볼까요?
+        </p>
+    </div>
+
+    <div class="mission-box" style="background-color: #fff0f5; border-color: #ffb6c1;">
+        <div class="mission-badge" style="background-color: #ff8da1;">게임 규칙 & 준비</div>
+        <div class="question">
+            🎮 어떤 게임을 만들까요?
+        </div>
+        <ul>
+            <li><strong>목표:</strong> 키보드 화살표로 엔트리봇을 조종해서 미로를 빠져나가세요.</li>
+            <li><strong>규칙:</strong> 벽(미로)에 닿으면 <strong>처음 위치로</strong> 돌아가야 해요!</li>
+        </ul>
+        <hr style="border: 1px dashed #ffb6c1; margin: 20px 0;">
+        <p><strong>[준비물 챙기기]</strong></p>
+        <ul>
+            <li>🐶 <strong>엔트리봇:</strong> 우리의 주인공! (기본으로 있어요)</li>
+            <li>🌀 <strong>미로 배경:</strong> [오브젝트 추가] → [배경] 에서 '미로'를 찾아 넣어주세요.</li>
+        </ul>
+    </div>
+
+    <div class="angle-box">
+        <div class="question" style="color: #8d3af1; margin-bottom:15px; font-size: 1.4em;">
+            🧭 엔트리봇의 나침반 (방향 익히기)
+        </div>
+        
+        <p class="angle-desc">
+            엔트리의 방향은 <strong>커다란 원</strong> 같아요!<br>
+            위쪽(0도)에서 시작해서 <strong>시계 방향</strong>으로 돌며 숫자가 커져요.
+        </p>
+
+        <img src="https://happyhyeok.github.io/2026mjlib/2_1.png" alt="엔트리 방향 원형 설명" class="angle-img">
+        
+        <div class="card-container">
+            <div class="angle-card">
+                <div class="arrow-box"><span class="arrow-icon">↑</span></div>
+                <div class="card-title">위쪽</div>
+                <div class="card-deg">0도</div>
+            </div>
+            <div class="angle-card">
+                <div class="arrow-box"><span class="arrow-icon">→</span></div>
+                <div class="card-title">오른쪽</div>
+                <div class="card-deg">90도</div>
+            </div>
+            <div class="angle-card">
+                <div class="arrow-box"><span class="arrow-icon">↓</span></div>
+                <div class="card-title">아래쪽</div>
+                <div class="card-deg">180도</div>
+            </div>
+            <div class="angle-card highlight">
+                <div class="arrow-box"><span class="arrow-icon">←</span></div>
+                <div class="card-title">왼쪽</div>
+                <div class="card-deg">270도</div>
+                <div class="card-sub">(또는 -90도)</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mission-box" style="background-color: #e6ffe6; border-color: #00b400;">
+        <div class="mission-badge" style="background-color: #00b400;">중요 개념: 시작 신호</div>
+        <div class="question">
+            🚦 컴퓨터는 언제 움직일까요?
+        </div>
+        <p>
+            가만히 있는 컴퓨터에게 "움직여!"라고 신호를 줘야 해요.<br>
+            이런 신호등 역할을 하는 블록들은 모두 <strong>초록색 <span class="txt-start">[시작]</span> 꾸러미</strong>에 모여 있어요.
+        </p>
+        <div style="text-align: center; margin-top: 20px;">
+            <span class="block b-start">q 키를 눌렀을 때</span>
+            <span class="block b-start">마우스를 클릭했을 때</span>
+            <span class="block b-start">시작하기 버튼을 클릭했을 때</span>
+        </div>
+        <p style="text-align: center; color: #009000; font-weight: bold; margin-top: 15px;">
+            "게임을 시작할 때, 키보드를 누를 때, 마우스를 클릭할 때"<br>
+            이런 말이 나오면 무조건 <span class="txt-start">초록색 시작 블록</span>을 찾으세요!
+        </p>
+    </div>
+
+    <div class="mission-box">
+        <div class="mission-badge">1단계: 화살표로 움직이기</div>
+        <div class="question">
+            Q. 키보드의 [오른쪽 화살표 →]를 누르면 오른쪽으로 가게 해볼까요?
+        </div>
+        <p>
+            <span class="txt-start">[시작]</span> 꾸러미에서 어떤 블록을 가져와야 할까요?<br>
+            맞아요. <strong>[q키를 눌렀을때]</strong>를 가져와서 '오른쪽 화살표'로 바꿔보세요.<br>
+            이제 <span class="txt-move">[움직임]</span> 꾸러미에서 <strong>이동방향을 정하고, 움직이는</strong> 블록을 가져와서 조립해요.<br>
+            오른쪽으로 움직여야 하니, 이동방향을 몇 도로 정해야 할까요?
+        </p>
+        
+        <div class="tip-box">
+            🤔 <strong>잠깐! 왜 '이동 방향'인가요?</strong><br>
+            그냥 '방향'은 엔트리봇이 얼굴만 돌리는 것이고,<br>
+            '이동 방향'은 실제로 걸어가는 길을 정하는 것이에요. 우리는 움직여야 하니까 <strong>이동 방향</strong>을 써야 해요!
+        </div>
+        
+        <details>
+            <summary></summary>
+            <div class="hint-content">
+                <p>그림을 보니 오른쪽은 <strong>90도</strong>네요!</p>
+                <span class="block b-start">오른쪽 화살표 ▼ 키를 눌렀을 때</span>
+                <br>
+                <span class="block b-move">이동 방향을 90 (으)로 정하기</span>
+                <br>
+                <span class="block b-move">이동 방향으로 5 만큼 움직이기</span>
+            </div>
+        </details>
+    </div>
+
+    <div class="mission-box">
+        <div class="mission-badge">2단계: 나머지 방향 완성하기</div>
+        <div class="question">
+            Q. 위, 아래, 왼쪽도 똑같이 만들어 볼까요?
+        </div>
+        <p>
+            오른쪽으로 이동하는 코드가 완성되었어요.<br>
+            이제 왼쪽, 위, 아래로 이동하는 코드도 만들어 봐요.<br>
+            1단계 코드를 복사해서, <strong>화살표 키 이름</strong>과 <strong>방향 각도</strong>만 바꿔주면 됩니다.<br>
+            (힌트: 위쪽 나침반 그림의 숫자를 잘 보고 넣어주세요.)
+        </p>
+
+        <details>
+            <summary></summary>
+            <div class="hint-content">
+                <p><strong>위쪽(↑)은 0도!</strong></p>
+                <span class="block b-start">위쪽 화살표 ▼ 키를 눌렀을 때</span>
+                <span class="block b-move">이동 방향을 0 (으)로 정하기</span>
+                <span class="block b-move">... 움직이기</span>
+                <br><br>
+                <p><strong>아래쪽(↓)은 180도!</strong></p>
+                <span class="block b-start">아래쪽 화살표 ▼ 키를 눌렀을 때</span>
+                <span class="block b-move">이동 방향을 180 (으)로 정하기</span>
+                <span class="block b-move">... 움직이기</span>
+                <br><br>
+                <p><strong>왼쪽(←)은 270도 (또는 -90도)!</strong></p>
+                <span class="block b-start">왼쪽 화살표 ▼ 키를 눌렀을 때</span>
+                <span class="block b-move">이동 방향을 270 (으)로 정하기</span>
+                <span class="block b-move">... 움직이기</span>
+            </div>
+        </details>
+    </div>
+
+    <div class="mission-box">
+        <div class="mission-badge">3단계: 벽에 닿으면 꽝!</div>
+        <div class="question">
+            Q. 미로 벽에 닿으면 처음 위치로 돌아가게 해요.
+        </div>
+        <p>
+            벽에 닿으면, 원래 위치로 돌아가게 하려면, 벽에 닿았는지 계속 확인해야 해요.<br>
+            시작하면, 계속 반복해서, 벽에 닿았는지 물어봐야 하죠.<br>
+            벽에 닿으면, 게임을 처음부터 다시 시작해야 해요.<br>
+            <span class="txt-start">[시작]</span>, <span class="txt-flow">[흐름]</span>, <span class="txt-judge">[판단]</span> 꾸러미에서 어떤 블록을 가져와야 할까요?<br>
+            가져온 블록을 어떻게 조립해야 할까요?
+        </p>
+
+        <details>
+            <summary></summary>
+            <div class="hint-content">
+                <p style="font-size: 1.2em; font-weight: bold; color: #2b96ed; margin-bottom: 20px;">
+                    반복 명령 안에 조건(만약) 명령을 넣어요!
+                </p>
+                <span class="block b-start">시작하기 버튼을 클릭했을 때</span>
+                <br>
+                <span class="block b-flow" style="padding: 20px;">
+                    계속 반복하기
+                    <br><br>
+                    <span class="block b-flow">만일 <span class="block b-judge">미로(4) 에 닿았는가?</span> (이)라면</span>
+                    <br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="block b-flow">처음부터 다시 실행하기</span>
+                </span>
+            </div>
+        </details>
+    </div>
+
+    <div class="extension-box">
+        <div class="extension-title">🚀 레벨 업! 도전 과제</div>
+        <p style="text-align:center; margin-bottom:30px;">코딩 천재들을 위한 특별 미션입니다!</p>
+
+        <div class="idea-card">
+            <h3>🏁 도전 1. 도착 지점 만들기</h3>
+            <p>탈출구가 없으면 심심하죠? '문'이나 '집'을 도착 지점으로 만들어보세요.</p>
+            <p style="background:#eee; padding:15px; border-radius:10px;">
+                <strong>[힌트]</strong><br>
+                1. <strong>[오브젝트 추가]</strong>에서 '집'을 추가해요.<br>
+                2. '벽에 닿았는가' 코드를 참고해서 새로운 코드를 짜요.<br>
+                3. <span class="txt-flow">만일 [집]에 닿았는가?</span> 라면...<br>
+                4. <span class="txt-look">"탈출 성공!" 말하기</span> 블록을 넣어주세요!
+            </p>
+        </div>
+
+        <div class="idea-card">
+            <h3>🎵 도전 2. 발소리 넣기</h3>
+            <p>걸어갈 때마다 소리가 나면 더 실감 나겠죠?</p>
+            <p style="background:#eee; padding:15px; border-radius:10px;">
+                <strong>[힌트]</strong><br>
+                1. <strong>[소리]</strong> 탭에서 짧은 소리(예: 걷는 소리, 톡 소리)를 추가해요.<br>
+                2. <strong>[블록]</strong> 탭으로 돌아와요.<br>
+                3. 아까 만든 4가지 화살표 코드(키를 눌렀을 때)를 찾으세요.<br>
+                4. 각 코드의 마지막에 <span class="txt-sound">[소리]</span> 꾸러미의 <span class="txt-sound">소리 [ ] 재생하기</span> 블록을 하나씩 끼워 넣으세요.
+            </p>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>
