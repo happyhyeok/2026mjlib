@@ -77,9 +77,27 @@
             font-size: 1.2em;
             font-weight: bold;
             margin-bottom: 15px;
+            color: #2c3e50;
         }
 
-        /* 엔트리 블록 CSS */
+        .step-list {
+            margin: 10px 0;
+            padding-left: 20px;
+            list-style-type: none;
+        }
+        .step-list li {
+            margin-bottom: 8px;
+            position: relative;
+        }
+        .step-list li::before {
+            content: "•";
+            color: #6cbf43;
+            font-weight: bold;
+            display: inline-block; 
+            width: 1em;
+            margin-left: -1em;
+        }
+
         .block {
             display: inline-block;
             padding: 8px 15px;
@@ -173,77 +191,96 @@
         <span class="thinking-title">🧠 코딩 박사의 비밀 노트</span>
         <p>
             복잡해 보이는 춤 동작도 <strong>"작게 나누어 순서대로"</strong> 만들면 아주 쉬워요!<br>
-            ① 음악을 틀고 ② 반복해서 ③ 모양을 바꾸며 움직이도록<br>
-            질문을 하나씩 해결하며 나만의 댄스 공연을 완성해 볼까요?
+            오늘은 앞으로 다가오고, 뒤로 물러나고, 몸을 뒤집는 멋진 동작들을 하나씩 완성해봅시다.
         </p>
     </div>
 
     <div class="mission-box" style="background-color: #fff0f5; border-color: #ffb6c1;">
         <div class="mission-badge" style="background-color: #ff8da1;">작품 설명 & 준비</div>
-        <div class="question">
-            🎬 어떤 작품을 만들까요?
-        </div>
-        <p>음악에 맞춰 <b>주인공</b>이 화려한 무대 위에서 모양을 바꾸며 신나게 춤을 추는 작품이에요.</p>
-        <hr style="border: 1px dashed #ffb6c1; margin: 20px 0;">
+        <div class="question">🎬 어떤 작품을 만들까요?</div>
+        <p>음악에 맞춰 <b>주인공</b>이 무대 위에서 앞뒤로 움직이고 몸을 뒤집으며 춤추는 작품이에요.</p>
         
-        <div class="warning-box">
-            📢 잠깐! 코딩하기 전에 꼭 확인하세요!
-        </div>
-        <p>엔트리에서는 <strong>"누구를 움직일지"</strong> 먼저 선택해야 해요.</p>
-        <ul>
-            <li>🕺 <b>주인공</b>이 춤을 추게 하려면? 하단 목록에서 <b>주인공</b>을 클릭하고 코딩하세요!</li>
-            <li>🎆 <b>무대</b> 색깔이 바뀌게 하려면? 하단 목록에서 <b>무대</b>를 클릭하고 코딩하세요!</li>
+        <div class="warning-box">📢 코딩 전 필수 확인!</div>
+        <ul class="step-list">
+            <li>춤을 추는 코드는 반드시 <b>주인공</b> 오브젝트를 클릭한 뒤에 만들어야 해요!</li>
         </ul>
         
         <p><strong>[준비물 챙기기]</strong></p>
-        <ul>
-            <li>✨ <strong>무대 배경:</strong> [오브젝트 추가] → '패션쇼 무대'를 넣어주세요.</li>
-            <li>🐧 <strong>주인공 추가:</strong> 멋진 춤을 출 <b>주인공</b>을 하나 골라주세요.</li>
-            <li>👗 <strong>모양 추가:</strong> <b>주인공</b>을 클릭하고 상단 <strong>[모양]</strong> 탭에서 춤추는 동작들을 2~3개 더 추가해주세요!</li>
-        </ul>
-    </div>
-
-    <div class="mission-box" style="background-color: #e3f2fd; border-color: #2196f3;">
-        <div class="mission-badge" style="background-color: #2196f3;">🧭 주인공의 내비게이션</div>
-        <div class="question">
-            ❓ 어디로 움직일까요? (X와 Y좌표)
-        </div>
-        <p>무대 위에는 보이지 않는 주소가 있어요.</p>
-        <ul>
-            <li><strong>위아래로 움직이기(앞뒤):</strong> <b>주인공</b>이 다가오거나 멀어지게 하려면 <span class="txt-move">Y좌표</span>를 바꿔요.</li>
-            <li><strong>왼쪽오른쪽 움직이기(좌우):</strong> <b>주인공</b>이 옆으로 이동하게 하려면 <span class="txt-move">X좌표</span>를 바꾼답니다!</li>
+        <ul class="step-list">
+            <li>✨ [오브젝트 추가] → '패션쇼 무대' 배경을 넣으세요.</li>
+            <li>🐧 멋진 춤을 출 <b>주인공</b>을 하나 고르세요.</li>
+            <li>👗 <b>주인공</b>의 [모양] 탭에서 [모양 추가하기]로 포즈를 2~3개 더 넣으세요!</li>
+            <li>🔊 <b>주인공</b>의 [소리] 탭에서 [소리 추가하기]로 '댄스 송'을 미리 넣어두세요!</li>
         </ul>
     </div>
 
     <div class="mission-box">
         <div class="mission-badge">1단계: 파티 시작 신호와 음악</div>
-        <div class="question">
-            Q. 시작 버튼을 누르면 바로 신나는 음악이 나오게 하려면?
-        </div>
-        <p>코딩을 시작하기 전, <b>주인공</b> 오브젝트가 선택되어 있는지 확인하세요!</p>
+        <div class="question">❓ 시작 버튼을 누르면 바로 신나는 음악이 나오게 하려면?</div>
+        <ul class="step-list">
+            <li>0. 코딩을 시작하기 전, <b>주인공</b> 오브젝트가 선택되어 있는지 확인하세요!</li>
+            <li>1. 상단 탭에서 <b>[소리]</b>를 눌러 신나는 음악을 먼저 추가해요.</li>
+            <li>2. <span class="txt-start">시작하기 버튼을 클릭했을 때</span> 블록을 가져와요.</li>
+            <li>3. <span class="txt-sound">소리 재생하기</span> 블록을 연결해요.</li>
+        </ul>
         <details>
             <summary></summary>
             <div class="hint-content">
-                <span class="block b-start">시작하기 버튼을 클릭했을 때</span>
-                <br>
+                <span class="block b-start">시작하기 버튼을 클릭했을 때</span><br>
                 <span class="block b-sound">소리 [공통 댄스 송] 재생하기</span>
             </div>
         </details>
     </div>
 
     <div class="mission-box">
-        <div class="mission-badge">2단계: 춤 동작 쪼개기 (다가오기)</div>
-        <div class="question">
-            Q. 주인공이 변신하면서 우리 쪽으로 다가오게 하려면?
-        </div>
-        <div class="tip-box">
-            <strong>💡 왜 '~만큼 바꾸기'를 쓸까요?</strong><br>
-            '~위치로 이동하기'는 순간이동이에요! 한 걸음씩 부드럽게 춤을 추려면 지금 자리에서 조금씩 움직이는 <strong>'~만큼 바꾸기'</strong>를 써야 해요.
-        </div>
+        <div class="mission-badge">2단계: 제자리에서 춤추기</div>
+        <div class="question">❓ 제자리에서 모양만 바꿔서 춤추게 만들려면?</div>
+        <ul class="step-list">
+            <li>1. 모양을 여러 번 바꿔야 하니 <span class="txt-flow">3번 반복하기</span> 블록을 써요.</li>
+            <li>2. 주인공의 모습을 바꾸는 <span class="txt-look">다음 모양으로 바꾸기</span> 블록을 넣어요.</li>
+        </ul>
         <details>
             <summary></summary>
             <div class="hint-content">
-                <span class="block b-flow">3 번 반복하기</span>
+                <span class="block b-flow">3 번 반복하기</span><br>
+                <div style="border-left: 3px solid #17c0e9; margin-left: 20px; padding-left: 10px; text-align: left;">
+                    <span class="block b-look">다음 모양으로 바꾸기</span>
+                </div>
+            </div>
+        </details>
+    </div>
+
+    <div class="mission-box">
+        <div class="mission-badge">3단계: 자연스럽게 연결하기</div>
+        <div class="question">❓ 주인공이 너무 빠르게 변하지 않고 자연스럽게 춤추려면?</div>
+        <ul class="step-list">
+            <li>1. 모양이 바뀔 때마다 아주 잠깐 멈춰야 해요.</li>
+            <li>2. <span class="txt-flow">기다리기</span> 블록을 추가해서 시간을 조절해요.</li>
+        </ul>
+        <details>
+            <summary></summary>
+            <div class="hint-content">
+                <span class="block b-flow">3 번 반복하기</span><br>
+                <div style="border-left: 3px solid #17c0e9; margin-left: 20px; padding-left: 10px; text-align: left;">
+                    <span class="block b-flow">0.5초 기다리기</span><br>
+                    <span class="block b-look">다음 모양으로 바꾸기</span>
+                </div>
+            </div>
+        </details>
+    </div>
+
+    <div class="mission-box">
+        <div class="mission-badge">4단계: 춤추며 이동하기</div>
+        <div class="question">❓ 주인공이 춤을 추면서 무대 앞으로 나오게 하려면?</div>
+        <ul class="step-list">
+            <li>1. 모양이 한 번 바뀔 때마다 조금씩 움직여야 해요.</li>
+            <li>2. 위아래(앞뒤) 이동은 <span class="txt-move">Y좌표 ~만큼 바꾸기</span> 블록을 써요.</li>
+            <li>3. 주인공이 점점 커지도록 <span class="txt-look">크기를 ~만큼 바꾸기</span>도 넣어볼까요?</li>
+        </ul>
+        <details>
+            <summary></summary>
+            <div class="hint-content">
+                <span class="block b-flow">3 번 반복하기</span><br>
                 <div style="border-left: 3px solid #17c0e9; margin-left: 20px; padding-left: 10px; text-align: left;">
                     <span class="block b-flow">0.5초 기다리기</span><br>
                     <span class="block b-look">다음 모양으로 바꾸기</span><br>
@@ -255,16 +292,17 @@
     </div>
 
     <div class="mission-box">
-        <div class="mission-badge">3단계: 춤 동작 쪼개기 (멀어지기)</div>
-        <div class="question">
-            Q. 반대로 몸을 뒤집어서 다시 무대 뒤로 돌아가게 하려면?
-        </div>
-        <p>2단계 숫자의 마이너스(-)를 빼거나 붙여서 반대로 움직여보세요.</p>
+        <div class="mission-badge">5단계: 춤추며 뒤로 물러나기</div>
+        <div class="question">❓ 앞으로 나온 주인공이 다시 무대 뒤로 돌아가려면?</div>
+        <ul class="step-list">
+            <li>1. 4단계에서 썼던 숫자들의 <b>부호(+ / -)</b>를 반대로 바꿔보세요.</li>
+            <li>2. 위쪽으로 올라가야 하니 <span class="txt-move">Y좌표를 5 만큼 바꾸기</span>를 써요.</li>
+            <li>3. 멀어질수록 작아지게 <span class="txt-look">크기를 -10 만큼 바꾸기</span>를 넣어요.</li>
+        </ul>
         <details>
             <summary></summary>
             <div class="hint-content">
-                <span class="block b-look">좌우 모양 뒤집기</span><br>
-                <span class="block b-flow">3 번 반복하기</span>
+                <span class="block b-flow">3 번 반복하기</span><br>
                 <div style="border-left: 3px solid #17c0e9; margin-left: 20px; padding-left: 10px; text-align: left;">
                     <span class="block b-flow">0.5초 기다리기</span><br>
                     <span class="block b-look">다음 모양으로 바꾸기</span><br>
@@ -275,28 +313,71 @@
         </details>
     </div>
 
+    <div class="mission-box">
+        <div class="mission-badge">6단계: 몸의 방향을 휙휙 바꾸기</div>
+        <div class="question">❓ 주인공이 왼쪽, 오른쪽을 번갈아 보며 춤추게 하려면?</div>
+        <ul class="step-list">
+            <li>1. <span class="txt-look">좌우 모양 뒤집기</span> 블록을 사용해 보세요.</li>
+            <li>2. 앞으로 다가오기 전과 뒤로 가기 전 사이에 이 블록을 넣어볼까요?</li>
+        </ul>
+        <details>
+            <summary></summary>
+            <div class="hint-content">
+                <span class="block b-look">좌우 모양 뒤집기</span>
+            </div>
+        </details>
+    </div>
+
+    <div class="mission-box">
+        <div class="mission-badge">7단계: 음악이 끝날 때까지 춤추기</div>
+        <div class="question">❓ 음악이 계속 나오는데 춤이 멈추지 않게 하려면?</div>
+        <ul class="step-list">
+            <li>1. 지금까지 만든 모든 동작 블록을 하나로 묶어줄 주머니가 필요해요.</li>
+            <li>2. <span class="txt-flow">계속 반복하기</span> 블록 안에 2~6단계 코드를 쏙 넣어보세요!</li>
+        </ul>
+        <details>
+            <summary></summary>
+            <div class="hint-content">
+                <span class="block b-flow">계속 반복하기</span><br>
+                <div style="border-left: 3px solid #17c0e9; margin-left: 20px; padding-left: 10px; text-align: left;">
+                    (위에서 만든 반복 동작들을 여기에 모두 넣어요!)
+                </div>
+            </div>
+        </details>
+    </div>
+
     <div class="extension-box">
-        <div class="extension-title">🚀 레벨 업! 추가 도전 과제</div>
+        <div class="extension-title">🚀 레벨 업! 도전 과제 (상세 힌트)</div>
         
         <div class="idea-card">
-            <h3>🎨 미션 1. 화려한 무대 조명 만들기</h3>
-            <p><strong>[주의!]</strong> 이 코드는 <b>주인공</b>이 아니라 <b>무대 배경</b>을 클릭하고 코딩하세요!</p>
-            <p style="background:#f9f9f9; padding:15px; border-radius:10px;">
-                <span class="block b-start">시작하기 버튼을 클릭했을 때</span> → <span class="block b-flow">계속 반복하기</span> → <span class="block b-look">색깔 효과를 10만큼 바꾸기</span>
-            </p>
+            <h3>🎨 도전 1. 화려한 무대 조명 만들기</h3>
+            <p><strong>[방법 안내]</strong></p>
+            <ul class="step-list">
+                <li>1. <b>무대</b> 오브젝트를 먼저 선택하세요.</li>
+                <li>2. <span class="txt-look">[생김새]</span> 꾸러미의 <b>색깔 효과를 25만큼 바꾸기</b> 블록을 사용해요.</li>
+                <li>3. 변화의 느낌을 주려면 색깔 효과 바꾸기를 <b>여러 번 반복</b>해서 사용해요.</li>
+                <li>4. 너무 빨리 바뀌면 정신없어요. <span class="txt-flow">기다리기</span> 블록을 함께 사용하세요.</li>
+            </ul>
         </div>
 
         <div class="idea-card">
-            <h3>💬 미션 2. 주인공의 멋진 인사</h3>
-            <p>춤을 시작하기 전이나 후에 관객들에게 인사를 해보세요.</p>
-            <p style="background:#f9f9f9; padding:15px; border-radius:10px;">
-                <span class="block b-look">"파티에 온 걸 환영해!"를 2초 동안 말하기</span>
-            </p>
+            <h3>💬 도전 2. 댄스 파티 홍보하기</h3>
+            <p><strong>[방법 안내]</strong></p>
+            <ul class="step-list">
+                <li>1. 춤을 시작하기 전, <span class="txt-look">[생김새]</span> 꾸러미의 <b>~를 2초 동안 말하기</b> 블록을 가져와요.</li>
+                <li>2. 글자를 클릭해서 <b>"자, 모두 시작합니다!"</b>라고 직접 타이핑해요.</li>
+                <li>3. 춤을 다 춘 다음에는 <b>"감사합니다!"</b>라고 인사하는 블록도 추가해볼까요?</li>
+            </ul>
         </div>
 
         <div class="idea-card">
-            <h3>⚡ 미션 3. 댄스 속도 조절하기</h3>
-            <p><span class="txt-flow">[0.5초 기다리기]</span>의 숫자를 바꿔서 아주 빠른 춤을 만들어보세요!</p>
+            <h3>🌟 도전 3. 반짝이 효과 추가하기</h3>
+            <p><strong>[방법 안내]</strong></p>
+            <ul class="step-list">
+                <li>1. <b>[오브젝트 추가]</b>에서 '별'이나 '반짝이'를 찾아 추가하세요.</li>
+                <li>2. 반짝이가 제자리에서 돌게 하려면 <span class="txt-move">[움직임]</span> 꾸러미의 <b>방향을 90만큼 회전하기</b>를 사용해요.</li>
+                <li>3. 파티가 끝날 때까지 돌아야 하므로 <span class="txt-flow">계속 반복하기</span> 주머니에 쏙 넣어주세요.</li>
+            </ul>
         </div>
     </div>
 </div>
