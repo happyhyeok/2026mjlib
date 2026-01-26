@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>엔트리 코딩: 신나는 댄스 파티!</title>
+    <style>
+        body {
+            font-family: 'Malgun Gothic', 'Dotum', sans-serif;
+            background-color: #f0f9ff;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+            font-size: 20px;
+            letter-spacing: -0.5px;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        /* 엔트리 블록 색상 하이라이트 */
+        .txt-start { color: #00b400; font-weight: bold; background: #e6ffe6; padding: 2px 6px; border-radius: 4px;}
+        .txt-flow { color: #17c0e9; font-weight: bold; background: #e0f9ff; padding: 2px 6px; border-radius: 4px;}
+        .txt-move { color: #8d3af1; font-weight: bold; background: #f3e6ff; padding: 2px 6px; border-radius: 4px;}
+        .txt-look { color: #e63c46; font-weight: bold; background: #ffe6e6; padding: 2px 6px; border-radius: 4px;}
+        .txt-sound { color: #83a602; font-weight: bold; background: #f4f9e0; padding: 2px 6px; border-radius: 4px;}
+
+        h1 {
+            color: #2b96ed;
+            text-align: center;
+            border-bottom: 3px solid #a3dbf0;
+            padding-bottom: 15px;
+            font-size: 2.0em;
+            font-weight: bold;
+        }
+        
+        .thinking-box {
+            background-color: #fff9c4;
+            border: 2px solid #fbc02d;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .thinking-title {
+            font-size: 1.2em;
+            color: #f57f17;
+            font-weight: bold;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .mission-box {
+            background-color: #eef7e6;
+            border: 2px solid #6cbf43;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+        }
+        .mission-badge {
+            background-color: #6cbf43;
+            color: white;
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-size: 1.0em;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+        .question {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        /* 엔트리 블록 CSS */
+        .block {
+            display: inline-block;
+            padding: 8px 15px;
+            border-radius: 20px;
+            color: white;
+            font-weight: bold;
+            margin: 4px;
+            box-shadow: 2px 2px 0px rgba(0,0,0,0.15);
+            font-size: 0.95em;
+            vertical-align: middle;
+        }
+        .b-start { background-color: #00b400; border: 1px solid #009000; } 
+        .b-flow { background-color: #17c0e9; border: 1px solid #1299ba; } 
+        .b-move { background-color: #8d3af1; border: 1px solid #6f2dbd; } 
+        .b-look { background-color: #e63c46; border: 1px solid #b83038; } 
+        .b-sound { background-color: #83a602; border: 1px solid #6a8601; }
+
+        details {
+            margin-top: 20px;
+            background-color: white;
+            border-radius: 10px;
+            padding: 15px;
+            border: 2px dashed #ccc;
+        }
+        summary {
+            cursor: pointer;
+            color: #555;
+            font-weight: bold;
+            font-size: 1.1em;
+            list-style: none;
+        }
+        summary::after {
+            content: " 🔍 정답 블록 힌트 보기 (클릭)"; 
+            color: #ff9d00;
+        }
+        .hint-content {
+            margin-top: 15px;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .tip-box {
+            background-color: #f0f4ff;
+            border-left: 5px solid #2b96ed;
+            padding: 15px;
+            margin-top: 15px;
+            font-size: 0.9em;
+        }
+        
+        .extension-box {
+            background-color: #e8eaf6;
+            border: 2px solid #3f51b5;
+            border-radius: 15px;
+            padding: 25px;
+            margin-top: 40px;
+        }
+        .extension-title {
+            color: #3f51b5;
+            text-align: center;
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+        .idea-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            border-left: 8px solid #7986cb;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>🕺 신나는 AI 댄스 파티!</h1>
+
+    <div class="thinking-box">
+        <span class="thinking-title">🧠 코딩 박사의 비밀 노트</span>
+        <p>
+            복잡해 보이는 춤 동작도 <strong>"작게 나누어 순서대로"</strong> 만들면 아주 쉬워요!<br>
+            ① 음악을 틀고 ② 반복해서 ③ 모양을 바꾸며 움직이도록<br>
+            질문을 하나씩 해결하며 나만의 댄스 공연을 완성해 볼까요?
+        </p>
+    </div>
+
+    <div class="mission-box" style="background-color: #fff0f5; border-color: #ffb6c1;">
+        <div class="mission-badge" style="background-color: #ff8da1;">작품 설명 & 준비</div>
+        <div class="question">
+            🎬 어떤 작품을 만들까요?
+        </div>
+        <p>음악에 맞춰 <b>주인공</b>이 화려한 무대 위에서 모양을 바꾸며 신나게 춤을 추는 작품이에요.</p>
+        <hr style="border: 1px dashed #ffb6c1; margin: 20px 0;">
+        <p><strong>[준비물 챙기기]</strong></p>
+        <ul>
+            <li>✨ <strong>무대 배경:</strong> [오브젝트 추가] → '패션쇼 무대'를 찾아 넣어주세요.</li>
+            <li>🐧 <strong>주인공 추가:</strong> 멋진 춤을 출 <b>주인공</b>을 하나 골라주세요.</li>
+            <li>👗 <strong>모양 추가 (필수!):</strong> <b>주인공</b>을 클릭하고 상단 <strong>[모양]</strong> 탭을 누른 뒤, <strong>[모양 추가하기]</strong>를 눌러 춤추는 동작들을 2~3개 더 넣어주세요!</li>
+        </ul>
+    </div>
+
+    <div class="mission-box" style="background-color: #e3f2fd; border-color: #2196f3;">
+        <div class="mission-badge" style="background-color: #2196f3;">🧭 주인공의 내비게이션</div>
+        <div class="question">
+            ❓ 어디로 움직일까요? (X와 Y좌표)
+        </div>
+        <p>
+            <b>주인공</b>이 무대 위에서 움직이려면 '좌표'라는 주소를 알아야 해요.
+        </p>
+        <ul>
+            <li><strong>앞뒤로 움직이기(위아래):</strong> <b>주인공</b>이 우리 눈앞으로 다가오거나 멀어지게 하려면 <span class="txt-move">Y좌표</span> 블록을 사용해요.</li>
+            <li><strong>옆으로 움직이기(좌우):</strong> <b>주인공</b>이 왼쪽이나 오른쪽으로 움직이게 하려면 <span class="txt-move">X좌표</span> 블록을 사용하면 된답니다!</li>
+        </ul>
+    </div>
+
+    <div class="mission-box">
+        <div class="mission-badge">1단계: 파티 시작 신호와 음악</div>
+        <div class="question">
+            Q. 시작 버튼을 누르면 바로 신나는 음악이 나오게 하려면?
+        </div>
+        <p>
+            모든 코딩의 시작은 <span class="txt-start">[시작]</span> 블록이에요.<br>
+            음악은 <span class="txt-sound">[소리]</span> 꾸러미에 들어있답니다.
+        </p>
+        <details>
+            <summary></summary>
+            <div class="hint-content">
+                <span class="block b-start">시작하기 버튼을 클릭했을 때</span>
+                <br>
+                <span class="block b-sound">소리 [공통 댄스 송] 재생하기</span>
+            </div>
+        </details>
+    </div>
+
+    <div class="mission-box">
+        <div class="mission-badge">2단계: 춤 동작 쪼개기 (다가오기)</div>
+        <div class="question">
+            Q. 주인공이 변신하면서 우리 쪽으로 다가오게 하려면?
+        </div>
+        <p>
+            동작을 3번 정도 반복해볼까요? <br>
+            <span class="txt-look">[생김새]</span>에서 모양과 크기를 바꾸고, <span class="txt-move">[움직임]</span>에서 Y좌표를 아래로(-) 내려보세요.
+        </p>
+        
+        <div class="tip-box">
+            <strong>💡 왜 '위치로 이동하기'가 아니라 '만큼 바꾸기'를 쓸까요?</strong><br>
+            '~ 위치로 이동하기'는 뿅! 하고 순간이동을 하는 블록이에요. 
+            하지만 춤은 한 걸음씩 부드럽게 움직여야 하죠? 
+            지금 서 있는 곳에서 조금씩 움직이려면 <strong>'~ 만큼 바꾸기'</strong> 블록이 꼭 필요해요!
+        </div>
+
+        <details>
+            <summary></summary>
+            <div class="hint-content">
+                <span class="block b-flow">3 번 반복하기</span>
+                <div style="border-left: 3px solid #17c0e9; margin-left: 20px; padding-left: 10px; text-align: left;">
+                    <span class="block b-flow">0.5초 기다리기</span><br>
+                    <span class="block b-look">다음 모양으로 바꾸기</span><br>
+                    <span class="block b-move">y 좌표를 -5 만큼 바꾸기</span><br>
+                    <span class="block b-move">x 좌표를 -5 만큼 바꾸기</span><br>
+                    <span class="block b-look">크기를 10 만큼 바꾸기</span>
+                </div>
+            </div>
+        </details>
+    </div>
+
+    <div class="mission-box">
+        <div class="mission-badge">3단계: 춤 동작 쪼개기 (멀어지기)</div>
+        <div class="question">
+            Q. 반대로 몸을 뒤집어서 다시 무대 뒤로 돌아가게 하려면?
+        </div>
+        <p>
+            2단계에서 썼던 숫자들을 반대로 바꿔주면 돼요!<br>
+            숫자 앞에 있는 마이너스(-)를 빼거나 붙여서 방향을 바꿔보세요.
+        </p>
+        <details>
+            <summary></summary>
+            <div class="hint-content">
+                <span class="block b-look">좌우 모양 뒤집기</span><br>
+                <span class="block b-flow">3 번 반복하기</span>
+                <div style="border-left: 3px solid #17c0e9; margin-left: 20px; padding-left: 10px; text-align: left;">
+                    <span class="block b-flow">0.5초 기다리기</span><br>
+                    <span class="block b-look">다음 모양으로 바꾸기</span><br>
+                    <span class="block b-move">y 좌표를 5 만큼 바꾸기</span><br>
+                    <span class="block b-move">x 좌표를 5 만큼 바꾸기</span><br>
+                    <span class="block b-look">크기를 -10 만큼 바꾸기</span>
+                </div>
+            </div>
+        </details>
+    </div>
+
+    <div class="extension-box">
+        <div class="extension-title">🚀 레벨 업! 추가 도전 과제</div>
+        <p style="text-align:center; margin-bottom:30px;">더 멋진 파티를 만들기 위한 3가지 미션이에요!</p>
+
+        <div class="idea-card">
+            <h3>🎨 미션 1. 화려한 무대 조명 만들기</h3>
+            <p>춤을 출 때 무대 배경의 색깔이 반짝거리면 더 멋지겠죠?</p>
+            <p style="background:#eee; padding:15px; border-radius:10px;">
+                <strong>[힌트]</strong> 무대 배경 오브젝트를 클릭하고, <span class="txt-look">[생김새]</span> 꾸러미에서 <span class="txt-look">[색깔 효과를 10만큼 바꾸기]</span> 블록을 반복문에 넣어보세요!
+            </p>
+        </div>
+
+        <div class="idea-card">
+            <h3>💬 미션 2. 주인공의 멋진 인사</h3>
+            <p>파티에 온 관객들에게 주인공이 인사를 하게 해볼까요?</p>
+            <p style="background:#eee; padding:15px; border-radius:10px;">
+                <strong>[힌트]</strong> 춤을 시작하기 전이나 후에 <span class="txt-look">[생김새]</span> 꾸러미의 <span class="txt-look">["안녕!"을 2초 동안 말하기]</span> 블록을 사용해보세요.
+            </p>
+        </div>
+
+        <div class="idea-card">
+            <h3>⚡ 미션 3. 댄스 속도 조절하기</h3>
+            <p>아주 빠른 춤이나 아주 느린 춤을 만들 수 있을까요?</p>
+            <p style="background:#eee; padding:15px; border-radius:10px;">
+                <strong>[힌트]</strong> 코드 속에 있는 <span class="txt-flow">[0.5초 기다리기]</span>의 숫자를 0.1로 줄이거나 1로 늘려서 춤의 속도를 바꿔보세요!
+            </p>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>
