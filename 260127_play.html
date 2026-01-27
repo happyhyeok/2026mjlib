@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>엔트리 코딩: 무지개 도형 악기 공장</title>
+    <style>
+        body { font-family: 'Malgun Gothic', sans-serif; background-color: #f0f9ff; color: #333; margin: 0; padding: 20px; line-height: 1.6; font-size: 20px; }
+        .container { max-width: 900px; margin: 0 auto; background-color: white; padding: 40px; border-radius: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        h1 { color: #2b96ed; text-align: center; border-bottom: 3px solid #a3dbf0; padding-bottom: 15px; }
+        
+        .thinking-box { background-color: #fff9c4; border: 2px solid #fbc02d; border-radius: 10px; padding: 20px; margin-bottom: 30px; text-align: center; }
+        .thinking-title { font-size: 1.2em; color: #f57f17; font-weight: bold; margin-bottom: 10px; display: block; }
+
+        .mission-box { background-color: #eef7e6; border: 2px solid #6cbf43; border-radius: 15px; padding: 25px; margin-bottom: 25px; }
+        .mission-badge { background-color: #6cbf43; color: white; padding: 6px 15px; border-radius: 20px; font-size: 1.0em; font-weight: bold; display: inline-block; margin-bottom: 15px; }
+        .question { font-size: 1.2em; font-weight: bold; margin-bottom: 15px; color: #2c3e50; }
+
+        .step-list { margin: 10px 0; padding-left: 20px; list-style-type: none; }
+        .step-list li { margin-bottom: 8px; position: relative; }
+        .step-list li::before { content: "•"; color: #6cbf43; font-weight: bold; display: inline-block; width: 1em; margin-left: -1em; }
+
+        /* 엔트리 블록 색상 하이라이트 */
+        .txt-start { color: #00b400; font-weight: bold; background: #e6ffe6; padding: 2px 6px; border-radius: 4px;}
+        .txt-flow { color: #17c0e9; font-weight: bold; background: #e0f9ff; padding: 2px 6px; border-radius: 4px;}
+        .txt-move { color: #8d3af1; font-weight: bold; background: #f3e6ff; padding: 2px 6px; border-radius: 4px;}
+        .txt-look { color: #e63c46; font-weight: bold; background: #ffe6e6; padding: 2px 6px; border-radius: 4px;}
+        .txt-sound { color: #83a602; font-weight: bold; background: #f4f9e0; padding: 2px 6px; border-radius: 4px;}
+
+        .block { display: inline-block; padding: 8px 15px; border-radius: 20px; color: white; font-weight: bold; margin: 4px; box-shadow: 2px 2px 0px rgba(0,0,0,0.15); font-size: 0.95em; vertical-align: middle; }
+        .b-start { background-color: #00b400; border: 1px solid #009000; } 
+        .b-flow { background-color: #17c0e9; border: 1px solid #1299ba; } 
+        .b-move { background-color: #8d3af1; border: 1px solid #6f2dbd; } 
+        .b-look { background-color: #e63c46; border: 1px solid #b83038; } 
+        .b-sound { background-color: #83a602; border: 1px solid #6a8601; }
+
+        .drawing-tip { background-color: #f3f0ff; border: 1px solid #8d3af1; padding: 15px; border-radius: 10px; font-size: 0.9em; margin: 10px 0; }
+        .warning-box { background-color: #ffebee; border: 2px solid #ef5350; border-radius: 10px; padding: 15px; margin: 15px 0; color: #c62828; font-weight: bold; }
+        .img-box { text-align: center; margin: 20px 0; }
+        .img-box img { max-width: 100%; height: auto; border: 1px solid #ddd; border-radius: 10px; }
+        .img-title { font-size: 0.9em; font-weight: bold; color: #2b96ed; margin-top: 10px; }
+
+        details { margin-top: 20px; background-color: white; border-radius: 10px; padding: 15px; border: 2px dashed #ccc; }
+        summary { cursor: pointer; color: #555; font-weight: bold; font-size: 1.1em; list-style: none; }
+        summary::after { content: " 🔍 정답 블록 힌트 보기 (클릭)"; color: #ff9d00; }
+        .hint-content { margin-top: 15px; padding: 15px; background-color: #f9f9f9; border-radius: 8px; text-align: center; }
+
+        .extension-box { background-color: #e8eaf6; border: 2px solid #3f51b5; border-radius: 15px; padding: 25px; margin-top: 40px; }
+        .idea-card { background: white; padding: 20px; border-radius: 10px; margin-bottom: 15px; border-left: 8px solid #7986cb; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>🎶 도형으로 연주하기 악기 공장</h1>
+
+    <div class="thinking-box">
+        <span class="thinking-title">🧠 코딩 박사의 비밀 노트</span>
+        <p>우리 주변의 도형들이 멋진 악기가 된다면 어떤 소리가 날까요?<br>
+        직접 그린 도형과 찾은 도형을 <b>악기</b>로 만들고, 클릭할 때마다 춤을 추게 해봐요!</p>
+    </div>
+
+    <div class="mission-box" style="background-color: #fff0f5; border-color: #ffb6c1;">
+        <div class="mission-badge" style="background-color: #ff8da1;">준비 단계</div>
+        <div class="question">🎬 나만의 악기(오브젝트) 만들기</div>
+        
+        <div class="drawing-tip">
+            <strong>💡 비트맵 vs 벡터, 뭐가 다를까?</strong><br>
+            • <b>비트맵:</b> 작은 점들로 그려요. 그림을 크게 키우면 계단처럼 울퉁불퉁해져요.<br>
+            • <b>벡터:</b> 선과 면으로 그려요. 아무리 크게 키워도 매끈하고 깨끗해요! <b>우리는 벡터로 그릴 거예요!</b>
+        </div>
+
+        <div class="img-box">
+            <img src="https://happyhyeok.github.io/2026mjlib/4_1.png" alt="벡터 새로 그리기 가이드">
+            <div class="img-title">오브젝트 추가하기 -> 벡터로 새로 그리기</div>
+        </div>
+
+        <ul class="step-list">
+            <li>🟦 <b>사각형:</b> [오브젝트 추가] → [새로 그리기] → [벡터] 선택. 사각형 도구로 그리고 색 채우기 도구로 예쁘게 색칠하세요.</li>
+            <li>🔵 <b>타원:</b> [오브젝트 추가] → [새로 그리기] → [벡터] 선택. 원 도구로 길쭉한 타원을 그리고 색칠하세요.</li>
+            <li>⭐ <b>별:</b> [오브젝트 추가] → 검색창에 <b>'별'</b>을 검색해서 맘에 드는 별을 추가하세요.</li>
+            <li>🔺 <b>삼각형:</b> [오브젝트 추가] → <b>'삼각형'</b> 검색. (속이 빈 삼각형은 마우스로 클릭하기 힘드니, 꼭 <b>색이 꽉 찬 삼각형</b>을 골라주세요!)</li>
+            <li>❤️ <b>하트:</b> [오브젝트 추가] → 검색창에 <b>'하트'</b>를 검색해서 추가하세요.</li>
+        </ul>
+
+        <div class="warning-box">
+            📢 중요! 하단 악기 목록에서 이름을 [사각형], [별] 등으로 알맞게 꼭 고쳐주세요!
+            <div class="img-box" style="margin-top: 15px;">
+                <img src="https://happyhyeok.github.io/2026mjlib/4_3.png" alt="악기 이름 변경 예시">
+            </div>
+        </div>
+    </div>
+
+    <div class="mission-box">
+        <div class="mission-badge">사각형: '도' 소리와 함께 두근두근 댄스</div>
+        <div class="question">❓ 사각형을 클릭하면 '도' 소리가 나면서 커졌다 작아졌다 하게 하려면?</div>
+        <ul class="step-list">
+            <li>1. 상단 <b>[소리]</b> 탭에서 '마림바 04_도' 소리를 추가하세요.</li>
+            <li>2. <span class="txt-start">[시작]</span> 꾸러미에서 <b>[오브젝트를 클릭했을 때]</b>를 가져와요.</li>
+            <li>3. <span class="txt-sound">[소리]</span> 꾸러미에서 <b>[소리 재생하고 기다리기]</b>를 연결해요.</li>
+            <li>4. <span class="txt-flow">[흐름]</span> 의 <b>[3번 반복하기]</b> 주머니 안에 <span class="txt-look">[생김새]</span> 의 <b>[크기를 10만큼 바꾸기]</b>와 <b>[크기를 -10만큼 바꾸기]</b>를 넣으세요.</li>
+        </ul>
+        <details>
+            <summary></summary>
+            <div class="hint-content">
+                <span class="block b-start">오브젝트를 클릭했을 때</span><br>
+                <span class="block b-sound">소리 [마림바 04_도] 재생하고 기다리기</span><br>
+                <span class="block b-flow">3 번 반복하기</span><br>
+                <div style="border-left: 3px solid #17c0e9; margin-left: 20px; padding-left: 10px; text-align: left;">
+                    <span class="block b-look">크기를 10 만큼 바꾸기</span> → <span class="block b-flow">0.05초 기다리기</span><br>
+                    <span class="block b-look">크기를 -10 만큼 바꾸기</span> → <span class="block b-flow">0.05초 기다리기</span>
+                </div>
+            </div>
+        </details>
+    </div>
+
+    <div class="mission-box">
+        <div class="mission-badge">타원: '레' 소리와 함께 반짝반짝 무지개</div>
+        <div class="question">❓ 타원을 클릭하면 '레' 소리가 나면서 색깔이 계속 바뀌게 하려면?</div>
+        <ul class="step-list">
+            <li>1. 상단 <b>[소리]</b> 탭에서 '마림바 05_레' 소리를 추가하세요.</li>
+            <li>2. <span class="txt-look">[생김새]</span> 꾸러미에서 <b>[색깔 효과를 10만큼 주기]</b> 블록을 사용해요.</li>
+            <li>3. 효과가 끝나면 <b>[효과 모두 지우기]</b>를 붙여 원래 색으로 돌려주세요.</li>
+        </ul>
+    </div>
+
+    <div class="mission-box">
+        <div class="mission-badge">별: '미' 소리와 함께 뱅글뱅글 회전</div>
+        <div class="question">❓ 별을 클릭하면 '미' 소리가 나면서 제자리에서 휙휙 돌게 하려면?</div>
+        <ul class="step-list">
+            <li>1. 상단 <b>[소리]</b> 탭에서 '마림바 06_미' 소리를 추가하세요.</li>
+            <li>2. <span class="txt-move">[움직임]</span> 꾸러미에서 <b>[방향을 45도만큼 회전하기]</b>를 반복문에 넣으세요.</li>
+        </ul>
+    </div>
+
+    <div class="mission-box">
+        <div class="mission-badge">삼각형: '파' 소리와 함께 통통 점프</div>
+        <div class="question">❓ 삼각형을 클릭하면 '파' 소리가 나면서 위로 껑충 뛰어오르게 하려면?</div>
+        <ul class="step-list">
+            <li>1. 상단 <b>[소리]</b> 탭에서 '마림바 07_파' 소리를 추가하세요.</li>
+            <li>2. <span class="txt-move">[움직임]</span> 꾸러미에서 위아래 주소인 <b>[y 좌표를 10만큼 바꾸기]</b>와 <b>[y 좌표를 -10만큼 바꾸기]</b>를 번갈아 사용해요.</li>
+        </ul>
+    </div>
+
+    <div class="mission-box">
+        <div class="mission-badge">하트: '솔' 소리와 함께 두근두근 댄스</div>
+        <div class="question">❓ 하트를 클릭하면 '솔' 소리가 나면서 사각형처럼 움직이게 하려면?</div>
+        <p>힌트: 사각형의 코드를 복사해서 가져오거나, 사각형 미션을 다시 보고 <b>크기 바꾸기</b> 블록을 사용해 보세요!</p>
+    </div>
+
+<div class="extension-box">
+        <h2 style="color: #3f51b5; text-align: center;">🚀 레벨 업! 도전 과제</h2>
+        
+        <div class="idea-card">
+            <h3>🎨 도전 1. 유령 악기 만들기</h3>
+            <p>클릭하면 <b>악기</b>가 점점 투명해졌다가 다시 나타나게 해보세요.</p>
+            <ul class="step-list">
+                <li>1. 유령 악기로 사용할 도형을 선택해요.</li>
+                <li>2. 이미 만들어진 코드에 필요한 코드를 추가해서 만들어요.</li>
+                <li>3. <span class="txt-look">[생김새]</span> 꾸러미의 <b>[투명도 효과를 ~만큼 주기]</b> 블록을 찾아요.</li>
+            </ul>
+            <div class="img-box">
+                <img src="https://happyhyeok.github.io/2026mjlib/4_2.png" alt="투명도 효과 블록">
+            </div>
+            <ul class="step-list">
+                <li>4. <b>투명도 숫자 팁:</b> 100에 가까워지면 완전히 안 보이고, 0에 가까워지면 잘 보여요.</li>
+                <li>5. 투명도 숫자가 점점 커져서 안 보였다가, 조금 기다린 후 다시 나타나게 만들어 보세요!</li>
+            </ul>
+        </div>
+
+        <div class="idea-card">
+            <h3>💬 도전 2. 악기의 노래 가사</h3>
+            <p>소리가 날 때 <b>악기</b>가 자신의 음 이름을 말하게 하세요.</p>
+            <ul class="step-list">
+                <li>1. 말하기 기능을 넣을 악기를 선택해요.</li>
+                <li>2. <span class="txt-look">[생김새]</span> 꾸러미에서 <b>[~를 1초 동안 말하기]</b> 블록을 가져와요.</li>
+                <li>3. "안녕!" 대신 <b>"나는 도!"</b>처럼 음 이름을 직접 타이핑해 보세요.</li>
+                <li>4. 소리가 재생되는 시점에 맞춰 블록을 끼워 넣어보세요.</li>
+            </ul>
+        </div>
+
+        <div class="idea-card">
+            <h3>📐 도전 3. 요리조리 피하기</h3>
+            <p>클릭하면 <b>악기</b>가 무대 위 무작위 위치로 순간이동 하게 해보세요.</p>
+            <ul class="step-list">
+                <li>1. 깜짝 놀라게 할 악기를 선택해요.</li>
+                <li>2. <span class="txt-move">[움직임]</span> 꾸러미에서 <b>[무작위 위치로 이동하기]</b> 블록을 찾아요.</li>
+                <li>3. 클릭 신호 바로 다음에 이 블록을 넣어보세요. 악기를 잡으러 다니는 재미가 생겨요!</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
