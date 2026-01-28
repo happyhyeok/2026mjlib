@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>무작위수 윷놀이: 온라인 랭킹전</title>
+    <style>
+        :root { --yut-color: #8d6e63; --path-color: #d7ccc8; --highlight: #ff6b6b; --goal: #4caf50; --trap: #f06292; }
+        body { font-family: 'Nanum Gothic', sans-serif; background-color: #e0f7fa; padding: 20px; margin: 0; }
+        
+        .main-container {
+            display: flex;
+            max-width: 1400px;
+            margin: 0 auto;
+            gap: 20px;
+            align-items: flex-start;
+            justify-content: center;
+        }
+
+        .left-panel { flex: 1; min-width: 280px; position: sticky; top: 20px; }
+        
+        .center-panel {
+            flex: 1.5;
+            min-width: 460px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .right-panel {
+            flex: 0.8;
+            min-width: 250px;
+            background: #fff;
+            padding: 20px;
+            border-radius: 20px;
+            border: 3px solid #00acc1;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 20px;
+        }
+
+        .concept-box { background: #ffffff; border: 3px solid #00bcd4; padding: 25px; border-radius: 15px; text-align: left; }
+        .concept-box h3 { color: #00838f; margin-top: 0; }
+        .concept-box p { line-height: 1.6; color: #333; margin-bottom: 10px; }
+
+        .goal-box { background: #333; color: gold; padding: 15px; border-radius: 10px; margin-bottom: 20px; width: 100%; box-sizing: border-box; }
+        
+        .yut-board { position: relative; width: 420px; height: 420px; margin: 10px auto; background: #fafafa; border: 8px solid #5d4037; border-radius: 20px; }
+        .spot { position: absolute; width: 48px; height: 48px; background: var(--path-color); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: bold; transition: 0.3s; }
+        .spot.start { background: #3f51b5; color: white; }
+        .spot.goal-spot { background: var(--goal); color: white; border: 4px solid gold; box-shadow: 0 0 10px gold; }
+        .spot.trap-spot { background: var(--trap); color: white; font-size: 0.7rem; border: 2px solid #880e4f; white-space: pre-line; text-align: center; }
+
+        #player { width: 38px; height: 38px; background: #ffeb3b; border: 4px solid #f57f17; border-radius: 50%; position: absolute; transition: all 0.3s ease; z-index: 10; box-shadow: 0 4px 8px rgba(0,0,0,0.3); }
+        
+        .dashboard { display: flex; justify-content: center; gap: 15px; margin-bottom: 15px; width: 100%; }
+        .counter { font-size: 1.1rem; background: white; padding: 8px 15px; border-radius: 20px; border: 2px solid #5d4037; flex: 1; text-align: center; }
+        
+        .controls { background: #efebe9; padding: 20px; border-radius: 15px; display: inline-block; border: 2px solid #5d4037; width: 100%; box-sizing: border-box; }
+        input { width: 60px; padding: 8px; font-size: 1.1rem; border-radius: 5px; border: 1px solid #999; text-align: center; }
+        button { padding: 10px 25px; font-size: 1.2rem; background: #5d4037; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; }
+        button:disabled { background: #ccc; }
+        /* 재도전 버튼 스타일 추가 */
+        #retryBtn { background: #4caf50; margin-left: 10px; display: none; }
+        #retryBtn:hover { background: #43a047; }
+        
+        .status { font-size: 1.3rem; font-weight: bold; margin: 15px; color: #d84315; min-height: 1.6em; text-align: center; }
+        .remain { color: #2196f3; }
+
+        /* 온라인 랭킹 스타일 */
+        .ranking-title { text-align: center; color: #00838f; border-bottom: 2px solid #00acc1; padding-bottom: 10px; margin-bottom: 15px; }
+        .rank-list { list-style: none; padding: 0; margin: 0; max-height: 400px; overflow-y: auto; }
+        .rank-item { display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px dashed #ccc; animation: fadeIn 0.5s; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .rank-badge { background: #5d4037; color: white; width: 24px; height: 24px; border-radius: 50%; display: inline-flex; justify-content: center; align-items: center; font-size: 0.8rem; margin-right: 8px; flex-shrink: 0; }
+        .rank-item.top1 .rank-badge { background: gold; color: #333; box-shadow: 0 0 5px gold; }
+        .rank-item.top2 .rank-badge { background: silver; color: #333; }
+        .rank-item.top3 .rank-badge { background: #cd7f32; color: white; }
+        .rank-score { font-weight: bold; color: #d84315; margin-left: auto; }
+        .rank-name { margin-left: 5px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 0.95rem; max-width: 100px; }
+        
+        /* 로딩 스피너 */
+        .loader { border: 4px solid #f3f3f3; border-top: 4px solid #3498db; border-radius: 50%; width: 20px; height: 20px; animation: spin 2s linear infinite; margin: 0 auto; display: none; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        @media (max-width: 1100px) {
+            .main-container { flex-direction: column; align-items: center; }
+            .left-panel, .center-panel, .right-panel { width: 90%; max-width: 600px; position: static; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="main-container">
+        <!-- 왼쪽: 설명 -->
+        <div class="left-panel">
+            <div class="concept-box">
+                <h3>🌏 온라인 대전! 전략 탐험대</h3>
+                <p>1️⃣ <b>온라인 랭킹:</b> 이제 내 기록이 서버에 저장되어 전 세계 친구들과 경쟁할 수 있어요.</p>
+                <p>2️⃣ <b>실시간 업데이트:</b> 다른 친구가 기록을 세우면 명예의 전당이 바로 바뀝니다!</p>
+                <p>3️⃣ <b>전략 수립:</b> 울타리(최소~최대)를 잘 조절해서 가장 적은 횟수로 도착해 보세요.</p>
+            </div>
+            <p style="text-align: center; color: #006064; font-size: 0.9rem; margin-top: 20px;">
+                * 19번 칸에 정확히 멈춰야 성공입니다!
+            </p>
+        </div>
+
+        <!-- 가운데: 게임 보드 -->
+        <div class="center-panel">
+            <div class="goal-box">
+                <h2>🏆 미션: 정확히 19번 칸에 착지하라!</h2>
+                <p style="margin: 5px 0 0 0; font-size: 0.95rem;">지나치면 한 바퀴 더! 함정은 <b>시도 +2회</b> 페널티!</p>
+            </div>
+
+            <div class="dashboard">
+                <div class="counter">🎲 시도: <b id="tryCount">0</b>회</div>
+                <div class="counter" id="distanceMsg">남은 칸: <span class="remain">19칸</span></div>
+            </div>
+
+            <div class="yut-board" id="yutBoard"></div>
+
+            <div class="controls">
+                <b>범위:</b> 
+                <input type="number" id="min" placeholder="최소" oninput="validate()"> ~ 
+                <input type="number" id="max" placeholder="최대" oninput="validate()">
+                <button id="goBtn" onclick="moveYut()" disabled>🎲 숫자 뽑기!</button>
+                <!-- 재도전 버튼 추가 -->
+                <button id="retryBtn" onclick="resetGame()">🔄 다시 도전</button>
+            </div>
+
+            <div id="statusMsg" class="status">숫자를 입력해 모험을 시작하세요!</div>
+        </div>
+
+        <!-- 오른쪽: 온라인 순위 -->
+        <div class="right-panel">
+            <h3 class="ranking-title">🌐 글로벌 명예의 전당 (Top 10)</h3>
+            <div style="font-size: 0.8rem; color: #666; text-align: center; margin-bottom: 10px;">
+                * 실시간으로 업데이트 됩니다.
+            </div>
+            <div id="rankingLoader" class="loader"></div>
+            <ul id="rankList" class="rank-list">
+                <li style="text-align:center; padding:10px; color:#999;">데이터를 불러오는 중...</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Firebase SDK 로드 -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
+        import { getDatabase, ref, push, onValue, query, orderByChild, limitToFirst } 
+            from "https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js";
+
+        // 사용자 제공 Firebase Config
+        const firebaseConfig = {
+            apiKey: "AIzaSyAUzYofAClqm5rHQjqo9HvsMRmix8oymis",
+            authDomain: "randomgame-31630.firebaseapp.com",
+            databaseURL: "https://randomgame-31630-default-rtdb.firebaseio.com",
+            projectId: "randomgame-31630",
+            storageBucket: "randomgame-31630.firebasestorage.app",
+            messagingSenderId: "529691262815",
+            appId: "1:529691262815:web:97388f5780e35a81ba00ea"
+        };
+
+        let db;
+        let rankingsRef;
+
+        try {
+            const app = initializeApp(firebaseConfig);
+            db = getDatabase(app);
+            rankingsRef = ref(db, 'rankings');
+            
+            // 실시간 랭킹 리스너 시작
+            startRankingListener();
+        } catch (e) {
+            console.error("Firebase 초기화 실패:", e);
+            document.getElementById('rankList').innerHTML = 
+                `<li style='text-align:center; color:red; padding:10px;'>
+                    <b>설정 오류!</b><br>
+                    HTML 파일을 열어<br>firebaseConfig를 설정해주세요.
+                </li>`;
+        }
+
+        // 전역 함수로 등록 (module 밖에서 호출하기 위함)
+        window.registerOnlineRank = function(score) {
+            if (!db) {
+                alert("데이터베이스가 연결되지 않았습니다.");
+                // DB가 없어도 재도전은 해야하므로 버튼 표시
+                window.showRetryButton();
+                return;
+            }
+            
+            const name = prompt("🎉 축하합니다! 명예의 전당에 이름을 남기세요 (취소하면 기록되지 않음):", "모험가");
+            
+            if (name) {
+                // 데이터베이스에 저장 (push)
+                push(rankingsRef, {
+                    name: name,
+                    score: score,
+                    timestamp: Date.now()
+                }).then(() => {
+                    alert("기록이 서버에 저장되었습니다!");
+                    window.showRetryButton(); // 저장 후 재도전 버튼 표시
+                }).catch((error) => {
+                    alert("저장 실패: " + error.message);
+                    window.showRetryButton(); // 에러 나도 재도전 버튼 표시
+                });
+            } else {
+                // 취소한 경우 바로 재도전 버튼 표시
+                window.showRetryButton();
+            }
+        };
+
+        function startRankingListener() {
+            const list = document.getElementById("rankList");
+            const loader = document.getElementById("rankingLoader");
+            
+            loader.style.display = "block";
+
+            // 점수(score) 기준 오름차순 정렬, 상위 10개만 가져오기
+            const topRankQuery = query(rankingsRef, orderByChild('score'), limitToFirst(10));
+
+            onValue(topRankQuery, (snapshot) => {
+                loader.style.display = "none";
+                list.innerHTML = "";
+                
+                if (!snapshot.exists()) {
+                    list.innerHTML = "<li style='text-align:center; padding:10px; color:#999;'>아직 기록이 없습니다.<br>첫 번째 주인공이 되어보세요!</li>";
+                    return;
+                }
+
+                const data = [];
+                snapshot.forEach((childSnapshot) => {
+                    data.push(childSnapshot.val());
+                });
+
+                // Firebase는 오름차순으로 주지만, 확실하게 배열로 받아서 렌더링
+                data.forEach((rank, index) => {
+                    const li = document.createElement("li");
+                    li.className = `rank-item top${index+1}`;
+                    
+                    // 이름 XSS 방지 처리
+                    const safeName = rank.name ? rank.name.replace(/</g, "&lt;").replace(/>/g, "&gt;") : "익명";
+
+                    li.innerHTML = `
+                        <div style="display:flex; align-items:center; width: 100%;">
+                            <span class="rank-badge">${index + 1}</span>
+                            <span class="rank-name" title="${safeName}">${safeName}</span>
+                            <span class="rank-score">${rank.score}회</span>
+                        </div>
+                    `;
+                    list.appendChild(li);
+                });
+            });
+        }
+    </script>
+
+    <!-- 게임 로직 -->
+    <script>
+        const spots = [];
+        const boardSize = 20; 
+        const goalPos = 19;
+        const traps = [4, 9, 14]; 
+        const boardContainer = document.getElementById('yutBoard');
+        let playerPos = 0;
+        let tryCount = 0;
+        let isGameOver = false;
+
+        function createBoard() {
+            for (let i = 0; i < boardSize; i++) {
+                let x, y;
+                if (i <= 5) { x = 350 - (i * 68); y = 350; } 
+                else if (i <= 10) { x = 10; y = 350 - ((i-5) * 68); } 
+                else if (i <= 15) { x = 10 + ((i-10) * 68); y = 10; } 
+                else { x = 350; y = 10 + ((i-15) * 68); } 
+
+                const spot = document.createElement('div');
+                spot.className = 'spot';
+                if (i === 0) { spot.classList.add('start'); spot.innerText = "출발"; }
+                else if (i === goalPos) { spot.classList.add('goal-spot'); spot.innerText = "도착"; }
+                else if (traps.includes(i)) { spot.classList.add('trap-spot'); spot.innerText = "함정\n(+2)"; }
+                else { spot.innerText = i; }
+                
+                spot.style.left = x + 'px';
+                spot.style.top = y + 'px';
+                boardContainer.appendChild(spot);
+                spots.push({x: x + 5, y: y + 5});
+            }
+        }
+
+        createBoard();
+
+        const player = document.createElement('div');
+        player.id = 'player';
+        updatePlayerUI();
+        boardContainer.appendChild(player);
+
+        function validate() {
+            if(isGameOver) return;
+            const min = document.getElementById('min').value;
+            const max = document.getElementById('max').value;
+            const btn = document.getElementById('goBtn');
+            btn.disabled = !(min !== "" && max !== "" && parseInt(max) >= parseInt(min));
+        }
+
+        function moveYut() {
+            if(isGameOver) return;
+            const min = parseInt(document.getElementById('min').value);
+            const max = parseInt(document.getElementById('max').value);
+            
+            tryCount++;
+            updateTryCount();
+
+            const move = Math.floor(Math.random() * (max - min + 1)) + min;
+            document.getElementById('statusMsg').innerText = `🎲 ${move}이(가) 나왔습니다!`;
+
+            let currentMoveCount = 0;
+            const moveInterval = setInterval(() => {
+                playerPos++;
+                currentMoveCount++;
+                updatePlayerUI(playerPos % boardSize);
+
+                if (currentMoveCount >= move) {
+                    clearInterval(moveInterval);
+                    checkLanding();
+                }
+            }, 150);
+        }
+
+        function checkLanding() {
+            let finalPos = playerPos % boardSize;
+
+            if (finalPos === goalPos) {
+                // 성공 로직
+                document.getElementById('statusMsg').innerHTML = "<span style='color:blue;'>🎊 성공!! 정확히 안착! 🎊</span>";
+                isGameOver = true;
+                document.getElementById('goBtn').disabled = true;
+                
+                setTimeout(() => {
+                    // 온라인 랭킹 등록 함수 호출
+                    if (typeof window.registerOnlineRank === 'function') {
+                        window.registerOnlineRank(tryCount);
+                    } else {
+                        alert(`게임 끝! 총 시도: ${tryCount}회 (DB연동 실패)`);
+                        showRetryButton();
+                    }
+                }, 300);
+
+            } else {
+                if (playerPos > goalPos && finalPos <= goalPos) {
+                    document.getElementById('statusMsg').innerText = "지나쳤어요! 한 바퀴 더 돌아야 해요.";
+                } else if (traps.includes(finalPos)) {
+                    tryCount += 2;
+                    updateTryCount();
+                    document.getElementById('statusMsg').innerText = "⚠️ 함정 발생! 시도 횟수가 2회 늘어납니다!";
+                } else {
+                    document.getElementById('statusMsg').innerText = `${finalPos}번 칸에 멈췄습니다.`;
+                }
+                
+                playerPos = finalPos;
+                updateDistance();
+            }
+        }
+
+        function updateTryCount() {
+            document.getElementById('tryCount').innerText = tryCount;
+        }
+
+        function updateDistance() {
+            let dist = goalPos - playerPos;
+            if (dist < 0) dist += boardSize;
+            document.getElementById('distanceMsg').innerHTML = `남은 칸: <span class="remain">${dist}칸</span>`;
+        }
+
+        function updatePlayerUI(pos = playerPos) {
+            player.style.left = spots[pos % boardSize].x + 'px';
+            player.style.top = spots[pos % boardSize].y + 'px';
+        }
+
+        // --- 추가된 재도전 관련 함수들 ---
+
+        // 모듈 스크립트에서 호출할 수 있도록 전역 함수로 공개
+        window.showRetryButton = function() {
+            document.getElementById('retryBtn').style.display = 'inline-block';
+        }
+
+        // 게임 초기화 함수
+        function resetGame() {
+            playerPos = 0;
+            tryCount = 0;
+            isGameOver = false;
+
+            // UI 초기화
+            updatePlayerUI();
+            updateTryCount();
+            updateDistance();
+            document.getElementById('statusMsg').innerText = "숫자를 입력해 모험을 시작하세요!";
+            
+            // 버튼 상태 제어
+            document.getElementById('retryBtn').style.display = 'none';
+            
+            // 입력창 초기화 원하시면 아래 주석 해제하세요 (현재는 전략 수정을 위해 값 유지)
+            // document.getElementById('min').value = '';
+            // document.getElementById('max').value = '';
+
+            // 게임 시작 버튼 상태 갱신
+            validate();
+        }
+    </script>
+</body>
+</html>
