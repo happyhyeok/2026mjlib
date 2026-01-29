@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>엔트리 코딩 - 달리기 시합</title>
+    <style>
+        body { font-family: 'Malgun Gothic', sans-serif; background-color: #fdf6ff; color: #333; padding: 20px; line-height: 1.8; font-size: 20px; letter-spacing: -0.5px; }
+        .container { max-width: 850px; margin: 0 auto; background: white; padding: 30px; border-radius: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+        h1 { text-align: center; color: #9c27b0; border-bottom: 4px dotted #e1bee7; padding-bottom: 15px; }
+        
+        .step-card { background: #fff; border: 2px solid #e1bee7; border-radius: 20px; margin-bottom: 25px; overflow: hidden; }
+        .step-header { background: #f3e5f5; padding: 12px 20px; font-weight: bold; color: #7b1fa2; display: flex; align-items: center; }
+        .step-body { padding: 25px; }
+        
+        .badge { background: #9c27b0; color: white; padding: 2px 12px; border-radius: 15px; margin-right: 10px; font-size: 0.8em; }
+        .mission { background: #fff9c4; padding: 15px; border-radius: 10px; border-left: 5px solid #fbc02d; margin-bottom: 20px; font-weight: bold; }
+
+        .block-group { background: #f8f9fa; padding: 20px; border-radius: 15px; border: 1px solid #dee2e6; margin: 15px 0; text-align: left; line-height: 2.2; padding-left: 40px; }
+        .block { display: inline-block; padding: 6px 14px; border-radius: 20px; color: white; font-weight: bold; font-size: 0.9em; margin: 2px; box-shadow: 1px 1px 2px rgba(0,0,0,0.1); }
+        .b-start { background-color: #00b400; } 
+        .b-flow { background-color: #17c0e9; }  
+        .b-move { background-color: #8d3af1; }  
+        .b-look { background-color: #e63c46; }  
+        .b-judge { background-color: #a1d64b; color: #333; }
+        .b-sound { background-color: #83a602; }
+
+        .logic-box { background: #f0faff; border: 1px solid #b3e5fc; padding: 20px; border-radius: 15px; margin-top: 15px; }
+        .logic-title { color: #0288d1; font-weight: bold; display: block; margin-bottom: 10px; font-size: 1.1em; }
+        
+        details { margin-top: 15px; border: 1px dashed #ccc; border-radius: 10px; padding: 10px; }
+        summary { cursor: pointer; color: #9c27b0; font-weight: bold; font-size: 0.9em; list-style: none; text-align: center; }
+        summary::after { content: " 🔍 [정답 코드보기]"; }
+        
+        .c-start { color: #00b400; font-weight: bold; } 
+        .c-flow { color: #17c0e9; font-weight: bold; }  
+        .c-move { color: #8d3af1; font-weight: bold; }  
+        .c-look { color: #e63c46; font-weight: bold; }
+        .c-judge { color: #83a602; font-weight: bold; }
+        .c-sound { color: #83a602; font-weight: bold; }
+        
+        .point-text { color: #d32f2f; font-weight: bold; }
+        .logic-list { padding: 0; list-style: none; }
+        .logic-list li { margin-bottom: 12px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>🏃 엔트리 코딩: 달리기 시합!</h1>
+
+    <div class="step-card">
+        <div class="step-header"><span class="badge">준비</span> 1단계: 경기장과 선수들</div>
+        <div class="step-body">
+            <div class="mission">미션: 시합을 할 친구들과 멋진 잔디밭을 준비해 주세요.</div>
+            <p>1. 엔트리봇을 삭제해요.</p>
+            <p>2. 배경 오브젝트를 추가해요. 오브젝트 추가하기를 클릭하여, 배경에서 잔디밭을 찾아서 추가하세요.</p>
+            <p>3. 선수들을 데려와요. 오브젝트 추가하기를 클릭하여, 동물에서 '고양이', '곰', '강아지'를 추가해요.</p>
+            <p>4. 선수들이 너무 크면 시합하기 힘들니 크기를 80으로 줄여주세요.</p>
+        </div>
+    </div>
+
+    <div class="step-card" style="border-color: #17c0e9;">
+        <div class="step-header" style="background: #e1f5fe; color: #0288d1;"><span class="badge" style="background:#17c0e9">핵심</span> 2단계: 고양이의 '무한 반복' 훈련</div>
+        <div class="step-body">
+            <div class="mission">미션: 고양이가 스스로 다리를 움직이며 달려가게 만드세요.</div>
+            <div class="logic-box">
+                <span class="logic-title">💡 어떻게 만들 수 있을까요?</span>
+                <div class="logic-list">
+                    1. 고양이에게 달리기를 시작하라고 신호를 알려줘야 해요. → <span class="c-start">[시작]꾸러미 [시작하기 버튼을 클릭했을 때]</span><br><br>
+                    2. 고양이는 오른쪽으로 달려가야 해요. 엔트리에서 오른쪽 가는 것은 X좌표를 커지게 만드는 거예요. → <span class="c-move">[움직임]꾸러미 [x 좌표를 2만큼 바꾸기]</span><br><br>
+                    3. 고양이가 걷는 모양, 뛰는 모양으로 계속 바꿔줘야 진짜 움직이는 것 같아요. → <span class="c-look">[생김새]꾸러미 [다음 모양으로 바꾸기]</span><br><br>
+                    4. 고양이가 오른쪽으로 한 번만 가면 끝까지 갈 수 없어요. 끝까지 가려면, 오른쪽으로 가는 동작을 계속 반복해야 해요. → <span class="c-flow">[흐름]꾸러미 [계속 반복하기]</span><br><br>
+                    5. 컴퓨터가 너무 눈 깜빡할 새 달리지 않게 천천히 속도를 조절해 줘요. → <span class="c-flow">[흐름]꾸러미 [0.1초 기다리기]</span>
+                </div>
+            </div>
+            <details>
+                <summary></summary>
+                <div class="block-group">
+                    <span class="block b-start">시작하기 버튼을 클릭했을 때</span><br>
+                    &nbsp;&nbsp;&nbsp;┗ <span class="block b-flow">계속 반복하기</span><br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;┗ <span class="block b-look">다음 모양으로 바꾸기</span><br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;┗ <span class="block b-move">x 좌표를 2만큼 바꾸기</span><br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;┗ <span class="block b-flow">0.1초 기다리기</span>
+                </div>
+            </details>
+        </div>
+    </div>
+
+    <div class="step-card" style="border-color: #f5b041;">
+        <div class="step-header" style="background: #fff8e1; color: #f57c00;"><span class="badge" style="background:#f5b041">연습</span> 3단계: 곰 아저씨는 전력 질주!</div>
+        <div class="step-body">
+            <div class="mission">미션: 곰 아저씨가 고양이보다 조금 더 빨리 달려가게 만드세요.</div>
+            <div class="logic-box">
+                <span class="logic-title">💡 다시 조립하며 기억하기</span>
+                <div class="logic-list">
+                    1. 곰 아저씨를 클릭하고 코딩창을 확인하세요.<br><br>
+                    2. 곰 아저씨에게도 시작 신호를 먼저 주세요. → <span class="c-start">[시작]꾸러미 [시작하기 버튼을 클릭했을 때]</span><br><br>
+                    3. 곰 아저씨도 고양이처럼 오른쪽으로 달려가는데, 고양이보다 더 빨리 달려가야 해요. (고양이는 2, 곰 아저씨는 10) → <span class="c-move">[움직임]꾸러미 [x 좌표를 10만큼 바꾸기]</span><br><br>
+                    4. 곰 아저씨도 고양이처럼 모양을 계속 바꿔줘서, 진짜 움직이는 것처럼 보이게 해요.<br><br>
+                    5. 곰 아저씨도 끝까지 달리도록 반복시켜 주세요.<br><br>
+                    6. 컴퓨터가 너무 눈 깜빡할 새 달리지 않게 천천히 속도를 조절해 줘요.
+                </div>
+            </div>
+            <details>
+                <summary></summary>
+                <div class="block-group">
+                    <span class="block b-start">시작하기 버튼을 클릭했을 때</span><br>
+                    &nbsp;&nbsp;&nbsp;┗ <span class="block b-flow">계속 반복하기</span><br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;┗ <span class="block b-look">다음 모양으로 바꾸기</span><br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;┗ <span class="block b-move">x 좌표를 10만큼 바꾸기</span><br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;┗ <span class="block b-flow">0.1초 기다리기</span>
+                </div>
+            </details>
+        </div>
+    </div>
+
+    <div class="step-card" style="border-color: #ff5252;">
+        <div class="step-header" style="background: #ffebee; color: #c62828;"><span class="badge" style="background:#ff5252">응원</span> 4단계: 강아지는 나의 응원이 필요해!</div>
+        <div class="step-body">
+            <div class="mission">미션: 강아지는 마우스를 클릭해서, 우리가 뛰게 만들어요.</div>
+            <div class="logic-box">
+                <span class="logic-title">💡 어떻게 만들 수 있을까요?</span>
+                <div class="logic-list">
+                    1. 강아지를 클릭하고 코딩창을 확인하세요.<br><br>
+                    2. 강아지에게 마우스를 클릭해서 뛰라고 신호를 보내요. → <span class="c-start">[시작]꾸러미 [마우스를 클릭했을 때]</span><br><br>
+                    3. 응원을 받았으니 한 번에 아주 멀리 슝~ 하고 오른쪽으로 날아가게 해요. → <span class="c-move">[움직임]꾸러미 [x 좌표를 30만큼 바꾸기]</span><br><br>
+                    4. 슝하고 날아갈 때, 모양을 바꿔서 신나게 달리는 모습을 표현해요. → <span class="c-look">[생김새]꾸러미 [다음 모양으로 바꾸기]</span>
+                </div>
+            </div>
+            <details>
+                <summary></summary>
+                <div class="block-group">
+                    <span class="block b-start">마우스를 클릭했을 때</span><br>
+                    &nbsp;&nbsp;&nbsp;┗ <span class="block b-move">x 좌표를 30만큼 바꾸기</span><br>
+                    &nbsp;&nbsp;&nbsp;┗ <span class="block b-look">다음 모양으로 바꾸기</span>
+                </div>
+            </details>
+        </div>
+    </div>
+
+    <div class="step-card" style="border: 3px solid #4caf50;">
+        <div class="step-header" style="background: #e8f5e9; color: #2e7d32;"><span class="badge" style="background:#4caf50">레벨 업</span> 더 재미있게 만들어 봐요!</div>
+        <div class="step-body">
+            
+            <div class="mission">🚀 확장 1: 누가 1등인지 말해주기!</div>
+            <div class="logic-box">
+                <div class="logic-list">
+                    1. 고양이, 곰아저씨, 강아지에게 모두 블록을 추가해요.<br><br>
+                    2. 오른쪽 벽에 닿으면 1등이라고 말하고, 다른 선수들에게도 알려줘야 해요. <span class="c-start">[시작]꾸러미 [신호 만들기]</span>에서 <span class="point-text">"1등 알리기"</span> 신호를 먼저 만드세요.<br><br>
+                    3. 오른쪽에 닿았는지 물어봐야 해요. → <span class="c-flow">[흐름]꾸러미 [만일 참이라면]</span> 속에 <span class="c-judge">[판단]꾸러미 [오른쪽벽에 닿았는가?]</span>를 넣으세요.<br><br>
+                    4. 벽에 닿았다면 기쁘게 외쳐요. → <span class="c-look">[생김새]꾸러미 [내가 1등이다!를 4초 동안 말하기]</span><br><br>
+                    5. 다른 친구들에게도 소식을 전해요. → <span class="c-start">[시작]꾸러미 [1등 알리기 신호 보내기]</span><br><br>
+                    6. 언제 벽에 닿을지 모르니 <span class="c-flow">[계속 반복하기]</span> 울타리 안에 이 명령들을 넣어주세요.<br><br>
+                    7. 다른 친구가 1등 신호를 보내면 달리기를 멈춰요. → <span class="c-start">[시작]꾸러미 [1등 알리기 신호를 받았을 때]</span> 아래에 <span class="c-flow">[흐름]꾸러미 [자신의 다른 코드 멈추기]</span>를 붙여주세요.
+                </div>
+            </div>
+
+            <hr style="border:0.5px dashed #ccc; margin:25px 0;">
+
+            <div class="mission">🚀 확장 2: 미끌미끌 바나나 장애물</div>
+            <div class="logic-box">
+                <div class="logic-list">
+                    1. 오브젝트 추가하기에서 <span class="point-text">바나나</span>를 가져와 달리기 트랙 중간에 두세요.<br><br>
+                    2. 선수들이 바나나를 밟았는지 계속 감시해야 해요. → <span class="c-flow">[흐름]꾸러미 [만일 참이라면]</span> 울타리를 준비하세요.<br><br>
+                    3. 바나나에 닿았는지 확인하는 블록을 넣어요. → <span class="c-judge">[판단]꾸러미 [바나나에 닿았는가?]</span><br><br>
+                    4. 닿았다면 뒤로 미끄러져요. → <span class="c-move">[움직임]꾸러미 [x 좌표를 -50만큼 바꾸기]</span><br><br>
+                    5. 이 모든 과정도 달리기가 끝날 때까지 <span class="c-flow">[계속 반복하기]</span> 안에 있어야 해요!
+                </div>
+            </div>
+
+            <hr style="border:0.5px dashed #ccc; margin:25px 0;">
+
+            <div class="mission">🚀 확장 3: 관중석의 환호성 소리 추가</div>
+            <div class="logic-box">
+                <div class="logic-list">
+                    1. 배경을 클릭하고 코딩창을 확인하세요.<br><br>
+                    2. <span class="point-text">[소리] 탭</span>을 클릭해서 '환호성'이나 '박수' 소리를 추가하세요.<br><br>
+                    3. 시합이 시작되자마자 소리가 나게 해요. → <span class="c-start">[시작]꾸러미 [시작하기 버튼을 클릭했을 때]</span><br><br>
+                    4. 시합 내내 소리가 들려야 신나겠죠? → <span class="c-flow">[흐름]꾸러미 [계속 반복하기]</span> 울타리를 가져오세요.<br><br>
+                    5. 소리를 끝까지 들려줘요. → <span class="c-sound">[소리]꾸러미 [소리 환호성 재생하기]</span>를 반복문 안에 넣어주세요.
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
